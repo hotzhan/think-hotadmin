@@ -16,3 +16,6 @@ composer install
 * config/sms.php 短信网关配置（HotAdmin专用）
 * 其它配置文件参考ThinkPHP6/8的文档即可
 
+## 数据库文件
+sql.sql导入到自己的网站mysql数据库
+
