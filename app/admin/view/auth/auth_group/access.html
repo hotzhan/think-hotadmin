@@ -1,0 +1,338 @@
+{extend name="public/base" /}
+{block name="css"}
+
+{/block}
+{block name="js"}
+
+{/block}
+
+{block name="content"}
+<div class="row">
+    <div class="col-sm-12">
+
+
+        <div class="card">
+            <form class="form-horizontal dataForm" action="{:_url('access')}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="id" value="{$id}">
+            <div class="card-header">
+                <a class="btn btn-sm btn-default"><i class="fa fa-arrow-left"></i> 返回</a>
+                <a class="btn btn-sm btn-warning showAll" aria-expanded-all="false"><i class="fa fa-plus"></i> <span>显示全部</span></a>
+                <button type="submit" class="btn btn-sm btn-primary">保存</button>
+                <button type="reset" class="btn btn-sm btn-default">重置</button>
+            </div>
+            <!-- ./card-header -->
+            <div class="card-body p-0 access" id="menuData">
+
+                <table class="table table-hover table-left table-bordered">
+                    <tbody>
+                    <tr>
+                        <td id="checkAll"></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+
+            </div>
+            <!-- /.card-body -->
+
+            <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">保存</button>
+                    <button type="reset" class="btn btn-default">重置</button>
+            </div>
+            <!-- /.card-footer -->
+            </form>
+        </div>
+
+        <!-- /.card -->
+
+    </div>
+</div>
+<!-- /.row -->
+
+
+
+<script>
+    $.ajax({
+        url: "{:_url('accessrules')}",
+        dataType: 'json',
+        type: 'get',
+        data: {'type':0,'id':getUrlParam('id')},
+        complete: function () {
+            console.log('%cajax提交完成x', ';color:#00a65a');
+        },
+        success: function (result) {
+            console.log('%cajax提交完成x', ';color:#00a65a');
+            console.log(result.data);
+            //$('#menuData').html(generateMenuTree(result.data));
+            $('#menuData').children().first().after(generateMenuTree(result.data, result.ruleIds));
+            afterRulesLoad(result);
+
+        },
+        error: function (xhr, type, errorThrown) {
+            console.log('error');
+            console.log(result);
+        }
+    });
+
+    $(function () {
+        $('.dataForm').validate({});
+    });
+
+    /**
+     * 规则节点html加载完成后一些处理操作
+     */
+    function afterRulesLoad(result)
+    {
+        $('#checkAll').html(checkboxHtml(0, '全选', -1));
+
+        //设置不要折叠，必须等到html内容加载完成才可以，不然获取不到.noFold
+        $(".noFold").on('click', function (){
+            $(this).closest('tr').attr('aria-expanded', false);
+        });
+
+        $("#checkAll").click(function(){
+            var chkAll = $('#checkboxPrimary0');
+            var chks = $("input[type='checkbox'][name='ruleIds[]']");
+            if(chkAll.prop('checked')){
+                console.log('checked')
+                $('#checkboxPrimary0').prop('name', 'allIds');//全部选中，name
+                chks.prop("checked",true);
+            }else{
+                console.log('unchecked')
+                //chkAll.attr('checked','checked');
+                $('#checkboxPrimary0').prop('name', 'ruleIds[]');
+                chks.prop("checked",false);
+            }
+        });
+
+
+
+        //根据各节点状态遍历，重新设置节点checkbox状态
+        generateMenuTreeChk(result.data);//遍历规则树节点
+        setChkByChilds(0);//最顶级节点，全选节点
+
+        $('#checkboxPrimary0').on('change', function() {
+            console.log($(this))
+            if($(this).is(":checked")){
+                // checkbox被选中时的操作
+                console.log("Checkbox已经被选中");
+                $('#checkboxPrimary0').prop('name', 'allIds');//全部选中，name
+            } else {
+                // checkbox未被选中时的操作
+                console.log("Checkbox未被选中");
+                $('#checkboxPrimary0').prop('name', 'ruleIds[]');
+            }
+        });
+    }
+
+    /**
+     * 递归遍历节点
+     * @param data
+     * @param paddingLeft
+     * @param cchildren
+     * @returns {string}
+     */
+    function generateMenuTree(data, ids, paddingLeft=0, cchildren=true) {
+        var html = '';
+        var lt = 0.75;
+        var className = '';
+
+        if(paddingLeft === 0)
+            className = 'bg-gray1';
+        else if(paddingLeft === 0.75)
+            className = 'bg-gray2';
+
+        html += '<table class="table table-hover table-left table-bordered">';
+        html += '<tbody>';
+
+        paddingLeft += lt;//子菜单缩进
+
+        if(cchildren)
+        {
+            //data各节点还有子节点
+            for (var i in data) {
+                // 如果该节点还有子节点，则递归生成子菜单
+                if ($.isEmptyObject(data[i].children)) {
+                    html += '<tr class="'+className+'">';
+                    html += '<td>';
+                    html += '<i class="" style="padding-left:1.25rem;"></i>';
+                    html += checkboxHtml(data[i].id, data[i].name, data[i].parent_id, ids);
+                    html += '</td>';
+                    html += '</tr>';
+                }
+                else
+                {
+                    //判断是否有孙节点
+                    var flag = false;
+                    for (var j in data[i].children)
+                    {
+                        if(!$.isEmptyObject(data[i].children[j].children))
+                        {
+                            flag = true;
+                            break;
+                        }
+                    }
+                    html += '<tr class="'+className+'" data-widget="expandable-table" aria-expanded="true">';
+                    html += '<td>';
+                    html += '<i class="expandable-table-caret fas fa-caret-right fa-fw"></i>';
+                    html += checkboxHtml(data[i].id, data[i].name, data[i].parent_id, ids);
+                    html += '</td>';
+                    html += '</tr>';
+                    html += '<tr class="expandable-body">';
+                    html += '<td>';
+                    html += '<div class="p-0">';
+                    html += generateMenuTree(data[i].children, ids, paddingLeft, flag);
+                    html += '</div>';
+                    html += '</td>';
+                    html += '</tr>';
+                }
+            }
+        }
+        else
+        {
+            //data是最后的节点了，没有子节点了
+            html += '<tr>';
+            html += '<td>';
+            for (var i in data) {
+                html += checkboxHtml(data[i].id, data[i].name, data[i].parent_id, ids, 'ml-4');
+            }
+            html += '</td>';
+            html += '</tr>';
+        }
+
+        html += '</table>';
+        html += '</tbody>';
+        return html;
+    }
+
+    /**
+     * 递归遍历规则树节点checkbox状态
+     * @param data
+     */
+    function generateMenuTreeChk(data)
+    {
+        for (var i in data) {
+
+            if (!$.isEmptyObject(data[i].children)){
+                generateMenuTreeChk(data[i].children);
+            }
+            setChkByChilds(data[i].id);
+        }
+    }
+
+    /**
+     * checkbox的html代码块
+     * @param id
+     * @param name
+     * @param className
+     * @returns {string}
+     */
+    function checkboxHtml(id, name, parent_id, ids=[], className=''){
+        var html = '';
+        var chkd = '';
+        if(ids.includes(id))
+            chkd = 'checked';
+        //html += '<div class="icheck-primary d-inline ' + className + '">';//伪元素样式，不过无法显示checkbox第3种状态
+        html += '<div class="d-inline ' + className + '">';
+        html += '<input class="noFold mr-1" type="checkbox" value="'+ id +'" data-parent-id="'+parent_id+'" name="ruleIds[]" id="checkboxPrimary' + id + '" '+ chkd +' onclick="setCheckBox(this)">';
+        html += '<label class="noFold" for="checkboxPrimary' + id + '">';
+        html += name;
+        html += '</label>';
+        html += '</div>';
+        return html;
+    }
+
+    /**
+     * 递归遍历设置子节点状态
+     * @param obj
+     */
+    function setChild(obj)
+    {
+        var id = $(obj).val();
+        var element = $('[data-parent-id="'+id+'"]');
+        $.each(element, function (index, item) {
+
+            if($(item).prop("indeterminate"))
+                $(item).prop("indeterminate", false).change();//同时激活change行为，如果不激活，对应的checkbox无法监听到change状态
+
+            if($(obj).prop("checked"))
+                $(item).prop("checked", true).change();
+            else
+                $(item).prop("checked", false).change();
+
+            setChild(item);//递归遍历子节点
+
+        });
+    }
+
+    function setCheckBox(obj)
+    {
+        //$(obj).closest('tr').attr('aria-expanded', false);//设置不要折叠
+
+        setParent(obj);
+    }
+    /**
+     * 设置父节点checkbox状态
+     * @param obj
+     */
+    function setParent(obj, child=true)
+    {
+        var id = $(obj).val();
+        var elementParentId = $("#checkboxPrimary"+id).data('parent-id');
+        setChkByChilds(elementParentId);
+
+        if(id!=0)
+            setParent($("#checkboxPrimary"+elementParentId), false);
+
+        if(child)
+            setChild(obj);
+    }
+
+    /**
+     * 根据子节点状态设置当前节点状态
+     * @param id
+     */
+    function setChkByChilds(id)
+    {
+        var element = $('[data-parent-id="'+id+'"]');
+        var chkd = false;
+        var uchkd = false;
+        var indt = false;
+        $.each(element, function (index, item) {
+            //console.log(item);
+            if($(item).prop("checked") == true)
+                chkd = true;
+            else
+                uchkd = true;
+
+            if($(item).prop("indeterminate") == true)
+                indt = true;
+        });
+
+        if(chkd && uchkd==false && indt == false)
+        {
+            $("#checkboxPrimary"+id).prop("indeterminate", false).change();
+            $("#checkboxPrimary"+id).prop("checked", true).change();
+        }
+
+        if(chkd && uchkd && indt == false)
+        {
+            $("#checkboxPrimary"+id).prop("indeterminate", true).change();
+            $("#checkboxPrimary"+id).prop("checked", true).change();//父id也要写入数据库
+        }
+
+        if(indt == true)
+        {
+            $("#checkboxPrimary"+id).prop("indeterminate", true).change();
+            $("#checkboxPrimary"+id).prop("checked", true).change();//父id也要写入数据库
+        }
+
+        if(chkd==false && uchkd)
+        {
+            $("#checkboxPrimary"+id).prop("indeterminate", false).change();
+            $("#checkboxPrimary"+id).prop("checked", false).change();
+        }
+    }
+
+</script>
+{/block}

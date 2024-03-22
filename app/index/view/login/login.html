@@ -1,0 +1,166 @@
+{extend name="public/base" /}
+{block name="header"}
+<style>
+    .index-login-page, .index-register-page {
+        -ms-flex-align: center;
+        align-items: center;
+        /* background-color: #e9ecef; */
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        /* height: 100vh; */
+        -ms-flex-pack: center;
+        /* justify-content: center; */
+        padding-top: 30px;
+    }
+    .captcha img{height:34px; float:right;}
+
+</style>
+
+<!-- iCheck for checkboxes and radio inputs -->
+<link rel="stylesheet" href="__ADMIN__/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="__ADMIN__/plugins/fontawesome-free/css/v4-shims.css">
+{/block}
+
+{block name="content"}
+
+<div class="row">
+    <div class="col-sm-12">
+    <div class=" index-login-page">
+        <div class="login-box">
+            <!-- /.login-logo -->
+            <div class="card card-outline card-primary">
+                <div class="card-header text-center">
+                    <a href="#" class="h2">登录</a>
+                </div>
+                <div class="card-body">
+                    <!--<p class="login-box-msg">请输入账户信息</p>-->
+
+                    <form action="" method="post" class="dataForm">
+                        <div class="input-group mb-3">
+                            <input type="text" name="username" class="form-control" placeholder="用户名/邮箱/手机号">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-user"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="password" name="password" class="form-control" placeholder="密码">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-lock"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-bottom: 15px;">
+                            {switch $captchaType}
+                            {case image}
+                            <div class="col-sm-6 formInput">
+                                <input type="text" name="captcha" class="form-control" placeholder="验证码" maxlength="6">
+                            </div>
+                            <div class="col-sm-6 captcha">
+                                {:captcha_img()}
+                            </div>
+                            {/case}
+                            {case slide}
+                            {/case}
+                            {/switch}
+                        </div>
+
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="icheck-primary">
+                                    <input type="checkbox" id="remember" name="remember">
+                                    <label for="remember">
+                                        记住我
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-4">
+                                <button type="submit" class="btn btn-primary btn-block">登录</button>
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                    </form>
+
+                    <div class="social-auth-links text-center mt-2 mb-3">
+                        <a href="#" class="btn btn-block btn-success">
+                            <i class="fa fa-wechat mr-2"></i>
+                            微信登录
+                        </a>
+                        <a href="#" class="btn btn-block btn-danger">
+                            <i class="fa fa-qq mr-2"></i>
+                            QQ登录
+                        </a>
+                    </div>
+                    <!-- /.social-auth-links -->
+
+                    <p class="mb-1">
+                        <a href="{:_url('register')}" class="float-left">注册新账号</a>
+                        <a href="forgot-password.html" class="float-right">忘记密码</a>
+                    </p>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+        <!-- /.login-box -->
+    </div>
+
+
+    </div>
+</div>
+
+{/block}
+
+{block name="footer"}
+
+
+
+
+<script>
+
+    $(function () {
+        $('.dataForm').validate({
+            rules: {
+                'username': {
+                    required: true
+                },
+                'password': {
+                    required: true
+                },
+                'captcha': {
+                    required: true
+                },
+            },
+            messages: {
+                'username': {
+                    required: '用户名不能为空'
+                },
+                'password': {
+                    required: '密码不能为空'
+                },
+                'captcha': {
+                    required: '验证码不能为空',
+                },
+            },
+            submitHandler: function (form) {
+                //form.submit()//直接提交方式
+                submitForm(form, null, refreshCaptcha)
+            }
+        })
+    })
+
+
+    function refreshCaptcha()
+    {
+        console.log($('.captcha'));
+        $('.captcha img').click();
+    }
+</script>
+{/block}

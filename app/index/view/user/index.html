@@ -1,0 +1,712 @@
+{extend name="public/base" /}
+{block name="header"}
+<style>
+    @media screen and (min-width: 800px)  {
+        .leftTab{
+            /*max-width: 210px;*/
+        }
+    }
+    .captcha img{height:34px; float:right;}
+</style>
+
+<!-- fileinput -->
+<script src="__ADMIN_PLUGINS__/fileinput/js/fileinput.min.js"></script>
+<!-- fileinput themes -->
+<script src="__ADMIN_PLUGINS__/fileinput/themes/fas/theme.min.js"></script>
+<script src="__ADMIN_PLUGINS__/fileinput/js/locales/zh.js"></script>
+<script src="__ADMIN_PLUGINS__/fileinput/js/plugins/sortable.min.js"></script>
+
+<script src="__STATIC_JS__/upload.js"></script>
+{/block}
+
+{block name="content"}
+
+<!-- /.row -->
+<div class="card card-primary card-outline">
+    <div class="card-header">
+        <h3 class="card-title">
+<!--            <i class="fas fa-edit"></i>-->
+            会员中心&nbsp;
+        </h3>
+    </div>
+    <div class="card-body">
+<!--        <h4>会员中心</h4>-->
+        <div class="row">
+            <div class="col-md-3 leftTab">
+                <ul class="nav flex-column nav-tabs h-100 nav-sidebar navPills" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
+                    <li class="nav-item"><a class="nav-link active" href="#vert-tabs-user" data-toggle="tab" aria-selected="true"><i class="fa fa-user-circle fa-fw"></i> 会员中心</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#vert-tabs-profile" data-toggle="tab" aria-selected="false"><i class="fa fa-user fa-fw"></i> 个人资料</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#vert-tabs-password" data-toggle="tab" aria-selected="false"><i class="fa fa-key fa-fw"></i> 修改密码</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#vert-tabs-avatar" data-toggle="tab" aria-selected="false"><i class="fab fa-fort-awesome-alt"></i> 修改头像</a></li>
+                </ul>
+            </div>
+            <div class="col-md-9 content">
+                <div class="tab-content" id="vert-tabs-tabContent">
+                    <div class="tab-pane text-left fade show active" id="vert-tabs-user" role="tabpanel" aria-labelledby="vert-tabs-user-tab">
+                        <div class="row">
+                            <div class="col-12 d-flex align-items-stretch flex-column">
+                                <div class="card bg-light d-flex flex-fill">
+                                    <div class="card-header text-muted border-bottom-0">
+                                        会员中心
+                                    </div>
+                                    <div class="card-body pt-0">
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <h2 class="lead"><b>{$user.nickname}</b></h2>
+                                                <p class="text-muted text-sm"><b>个人介绍：</b> {if $user.description} {$user.description} {else/}这个人很懒,啥也没写{/if}</p>
+                                                <ul class="mb-0 pl-0 text-muted">
+                                                    <li class="small pt-2 pb-2 row">
+                                                        <span class="col-sm-6"><i class="fas fa-lg fa-building"></i> 余额：{$user['money']}</span>
+                                                        <span class="col-sm-6"><i class="fas fa-lg fa-building"></i> 积分：{$user['score']}</span>
+                                                    </li>
+                                                    <li class="small pt-2 pb-2 row">
+                                                        <span class="col-sm-6"><i class="fas fa-lg fa-building"></i> 注册时间：{$user.create_time}</span>
+                                                        <span class="col-sm-6"><i class="fas fa-lg fa-building"></i> 登录时间：{$user.login_time|date='Y-m-d H:i:s'}</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-3 text-right">
+                                                <img src="{$user.avatar}" alt="user-avatar" class="img-circle img-fluid">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="text-right">
+                                            <a href="#" class="btn btn-sm bg-teal">
+                                                <i class="fas fa-comments"></i>
+                                            </a>
+                                            <a href="#" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-user"></i> View Profile
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="tab-pane fade" id="vert-tabs-profile" role="tabpanel" aria-labelledby="vert-tabs-profile-tab">
+                        <div class="card card-primary card-outline">
+                        <div class="card-header">
+                            <h3 class="card-title">个人资料</h3>
+                        </div>
+
+                        <form class="form-horizontal mt-2 dataForm" method="post" action="{:_url('edit')}">
+                            <input type="hidden" name="id" value="{$user.id}">
+                            <input type="hidden" name="type" value="edit_profile">
+                            <div class="card-body">
+                            <div class="form-group row">
+                                <label for="username" class="col-sm-2 col-form-label form-check-label">用户名</label>
+                                <div class="col-sm-4 formInput">
+                                    <input type="text" class="form-control" id="username" value="{$user.username}" disabled>
+                                </div>
+                                <div class="col-sm-6"></div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="nickname" class="col-sm-2 col-form-label form-check-label">昵称</label>
+                                <div class="col-sm-4 formInput">
+                                    <input type="text" class="form-control" id="nickname" name="nickname" value="{$user.nickname}">
+                                </div>
+                                <div class="col-sm-6"></div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="description" class="col-sm-2 col-form-label form-check-label">个人介绍</label>
+                                <div class="col-sm-8 formInput">
+                                    <input type="text" class="form-control" id="description" name="description" value="{$user.description}">
+                                </div>
+                                <div class="col-sm-2"></div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="email" class="col-sm-2 col-form-label form-check-label">邮箱</label>
+                                <div class="col-sm-4 input-group formInput">
+                                    <input type="text" class="form-control" id="email" value="{$user.email}" disabled>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-edit-email">
+                                            修改
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    {if $user.email_status==0}
+                                    <label for="email" class="col-form-label form-check-label">未验证，
+                                        <a href="javascript:" data-toggle="modal" data-target="#modal-active-email">点击验证</a>
+                                    </label>
+                                    {/if}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="mobile" class="col-sm-2 col-form-label form-check-label">手机号</label>
+                                <div class="col-sm-4 input-group formInput">
+                                    <input type="text" class="form-control" id="mobile" value="{$user.mobile}" disabled>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-edit-mobile">
+                                            修改
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    {if $user.mobile_status==0}
+                                    <label for="mobile" class="col-form-label form-check-label">未验证，
+                                        <a for="mobile" href="javascript:" data-toggle="modal" data-target="#modal-active-mobile">点击验证</a>
+                                    </label>
+                                    {/if}
+                                </div>
+                            </div>
+
+                            </div>
+                            <div class="card-footer">
+                                <div class="offset-sm-2 col-sm-10">
+                                    <button type="submit" class="btn btn-primary" onclick="submitEditForm(this)">保存</button>
+                                    <button type="reset" class="btn btn-default">重置</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        </div>
+
+                    </div>
+
+                    <div class="tab-pane fade" id="vert-tabs-password" role="tabpanel" aria-labelledby="vert-tabs-password-tab">
+                        <div class="card card-primary card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title">修改密码</h3>
+                            </div>
+                        <form class="form-horizontal dataForm" method="post" action="{:_url('edit')}">
+                            <input type="hidden" name="id" value="{$user.id}">
+                            <input type="hidden" name="type" value="modify_password">
+                            <div class="card-body">
+                            <div class="form-group row">
+                                <label for="password" class="col-sm-2 col-form-label form-check-label">原密码</label>
+                                <div class="col-sm-4 formInput">
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="请输入原密码" >
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                <i class="ace-icon fa fa-eye seePassword" title="显示密码"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-6"></div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="new_password" class="col-sm-2 col-form-label form-check-label">新密码</label>
+                                <div class="col-sm-4 formInput">
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="new_password" name="new_password" placeholder="请输入新密码">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                <i class="ace-icon fa fa-eye seePassword" title="显示密码"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6"></div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="re_new_password" class="col-sm-2 col-form-label form-check-label">重复新密码</label>
+                                <div class="col-sm-4 formInput">
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="re_new_password" name="re_new_password" placeholder="请再次输入新密码">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                <i class="ace-icon fa fa-eye seePassword" title="显示密码"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6"></div>
+                            </div>
+
+                            </div>
+
+                            <div class="card-footer">
+                                <div class="offset-sm-2 col-sm-10">
+                                    <button type="submit" class="btn btn-primary" onclick="submitEditForm(this)">保存</button>
+                                    <button type="reset" class="btn btn-default">重置</button>
+                                </div>
+                            </div>
+
+                        </form>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="vert-tabs-avatar" role="tabpanel" aria-labelledby="vert-tabs-avatar-tab">
+                        <div class="card card-primary card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title">修改头像</h3>
+                            </div>
+                        <form class="form-horizontal dataForm" method="post" action="{:_url('edit')}" enctype="multipart/form-data">
+                            <input type="hidden" name="id" value="{$user.id}">
+                            <input type="hidden" name="type" value="modify_avatar">
+                            <div class="card-body">
+                            <div class="form-group row">
+                                <label for="avatar" class="col-sm-2 col-form-label form-check-label">头像</label>
+                                <div class="col-sm-8 formInput">
+                                    <div class="">
+                                        <input id="avatar_file" name="avatar_file" type="file" class="file-loading " data-initial-preview="{if isset($user)}{$user.avatar}{/if}">
+                                        <input id="avatar" name="avatar" class="fieldImage" value="{$user.avatar|default=''}" hidden placeholder="请上传图片">
+                                        <script>
+                                            initUploadImg('avatar');
+                                        </script>
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-2"></div>
+                            </div>
+
+                            </div>
+
+                            <div class="card-footer">
+                                <div class="offset-sm-2 col-sm-10">
+                                    <button type="submit" class="btn btn-primary" onclick="submitEditForm(this)">保存</button>
+                                    <button type="reset" class="btn btn-default">重置</button>
+                                </div>
+                            </div>
+
+                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.card -->
+</div>
+<!-- /.card -->
+
+<div class="modal fade" id="modal-edit-email">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form class="form-horizontal dataForm" method="post" action="{:_url('edit')}">
+                <input type="hidden" name="id" value="{$user.id}">
+                <input type="hidden" name="type" value="edit_email">
+            <div class="modal-header">
+                <h4 class="modal-title">修改邮箱</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group mb-3 formInput">
+                    <input type="tel" class="form-control" id="edit-email" name="email" placeholder="新邮箱">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-envelope"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 15px;">
+                    <div class="col-sm-6 formInput">
+                        <input type="text" name="captcha" class="form-control" placeholder="验证码" maxlength="6">
+                    </div>
+                    <div class="col-sm-6 captcha">
+                        {:captcha_img()}
+                    </div>
+                </div>
+                <div class="input-group mb-3 formInput">
+                    <input type="text" class="form-control" id="mail_code" name="mail_code" placeholder="邮箱验证码">
+                    <input type="hidden" class="form-control" id="mail_token" name="mail_token" value="">
+                    <div class="input-group-append">
+                        <button type="button" class="input-group-text btn btn-default sendMail">
+                            获取验证码
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="submit" class="btn btn-primary" onclick="submitEditForm(this)">确定</button>
+            </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<div class="modal fade" id="modal-active-email">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form class="form-horizontal dataForm" method="post" action="{:_url('edit')}">
+                <input type="hidden" name="id" value="{$user.id}">
+                <input type="hidden" name="type" value="active_email">
+                <div class="modal-header">
+                    <h4 class="modal-title">修改邮箱</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3 formInput">
+                        <input type="tel" class="form-control" id="active-email" name="email" value="{$user.email}" readonly>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 15px;">
+                        <div class="col-sm-6 formInput">
+                            <input type="text" name="captcha" class="form-control" placeholder="验证码" maxlength="6">
+                        </div>
+                        <div class="col-sm-6 captcha">
+                            {:captcha_img()}
+                        </div>
+                    </div>
+                    <div class="input-group mb-3 formInput">
+                        <input type="text" class="form-control" id="verify_mail_code" name="mail_code" placeholder="邮箱验证码">
+                        <input type="hidden" class="form-control" id="verify_mail_token" name="mail_token" value="">
+                        <div class="input-group-append">
+                            <button type="button" class="input-group-text btn btn-default sendMail">
+                                获取验证码
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary" onclick="submitEditForm(this)">确定</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<div class="modal fade" id="modal-edit-mobile">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form class="form-horizontal dataForm" method="post" action="{:_url('edit')}">
+                <input type="hidden" name="id" value="{$user.id}">
+                <input type="hidden" name="type" value="edit_mobile">
+            <div class="modal-header">
+                <h4 class="modal-title">修改手机号码</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group mb-3 formInput">
+                    <input type="tel" class="form-control" id="edit-mobile" name="mobile" placeholder="新手机号">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-mobile"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 15px;">
+                    <div class="col-sm-6 formInput">
+                        <input type="text" name="captcha" class="form-control" placeholder="验证码" maxlength="6">
+                    </div>
+
+                    <div class="col-sm-6 captcha">
+                        {:captcha_img()}
+                    </div>
+                </div>
+                <div class="input-group mb-3 formInput">
+                    <input type="text" class="form-control" id="sms_code" name="sms_code" placeholder="手机验证码">
+                    <input type="hidden" class="form-control" id="sms_token" name="sms_token" value="">
+                    <div class="input-group-append">
+                        <button type="button" class="input-group-text btn btn-default sendSms">
+                            获取验证码
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="submit" class="btn btn-primary" onclick="submitEditForm(this)">确定</button>
+            </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<div class="modal fade" id="modal-active-mobile">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form class="form-horizontal dataForm" method="post" action="{:_url('edit')}">
+                <input type="hidden" name="id" value="{$user.id}">
+                <input type="hidden" name="type" value="active_mobile">
+                <div class="modal-header">
+                    <h4 class="modal-title">验证手机号码</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3 formInput">
+                        <input type="tel" class="form-control" id="active-mobile" name="mobile" value="{$user.mobile}" readonly>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-mobile"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 15px;">
+                        <div class="col-sm-6 formInput">
+                            <input type="text" name="captcha" class="form-control" placeholder="验证码" maxlength="6">
+                        </div>
+                        <div class="col-sm-6 captcha">
+                            {:captcha_img()}
+                        </div>
+                    </div>
+                    <div class="input-group mb-3 formInput">
+                        <input type="text" class="form-control" id="verify_sms_code" name="sms_code" placeholder="手机验证码">
+                        <input type="hidden" class="form-control" id="verify_sms_token" name="sms_token" value="">
+                        <div class="input-group-append">
+                            <button type="button" class="input-group-text btn btn-default sendSms">
+                                获取验证码
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary" onclick="submitEditForm(this)">确定</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+{/block}
+
+{block name="footer"}
+<script>
+    $(function () {
+        setNavTab('.navPills');//设置tab
+
+        $('.seePassword').on('click',function(){
+            seePassword(this)
+        });
+
+        $('body').on('click','.sendMail, .sendSms', function () {
+            console.log($(this));
+            if($(this).hasClass('sendMail'))
+                sendMail(this);
+            else
+                sendSms(this);
+        });
+
+    });
+
+    function submitEditForm(obj)
+    {
+        var form = $(obj).closest('form');
+        $(form).validate({
+            rules: {
+                'nickname': {
+                    required: true
+                },
+                'password': {
+                    required: true
+                },
+                'new_password': {
+                    required: true,
+                    minlength:6
+                },
+                're_new_password': {
+                    required: true,
+                    equalTo: "#new_password"
+                }
+            },
+            messages: {
+                'nickname': {
+                    required: '请出入昵称'
+                },
+                'password': {
+                    required: '请输入原密码'
+                },
+                'new_password': {
+                    required: '请输入新密码',
+                },
+                're_new_password': {
+                    required: '请再次输入新密码',
+                    equalTo: '重复新密码需要和新密码一致'
+                }
+            }
+        })
+    }
+
+    function refreshCaptcha(obj)
+    {
+        console.log($('.captcha'));
+        obj.click();
+    }
+
+    function refreshToken()
+    {
+        $.get("{:_url('index/token')}", function (data) {
+            console.log('data:' + data)
+            $('#htoken').val(data);
+        })
+
+    }
+
+    // 更新倒计时的函数
+    function updateCountdown(sendCodeButton, duration=60) {
+        if (duration > 0) {
+            sendCodeButton.prop("disabled", true);
+            sendCodeButton.text(duration + "秒后重新发送");
+            setTimeout(function() {
+                updateCountdown(sendCodeButton, duration - 1);
+            }, 1000);
+        } else {
+            sendCodeButton.prop("disabled", false);
+            sendCodeButton.text("重新发送验证码");
+        }
+    }
+
+    function checkMobile(phone)
+    {
+        var regex = /^1[3-9]\d{9}$/; // 中国大陆手机号正则表达式
+        return regex.test(phone);
+    }
+    function checkMail(email)
+    {
+        var regex = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/; // 邮箱正则表达式
+        console.log(regex.test(email))
+        return regex.test(email);
+    }
+
+    function sendSms(obj)
+    {
+        var id = $(obj).closest('form').find("input[name='id']").val();
+        var mobileObj = $(obj).closest('form').find("input[name='mobile']");
+        var tokenObj = $(obj).closest('form').find("input[name='sms_token']");
+        var captchaObj = $(obj).closest('form').find("input[name='captcha']");
+        var captchaImgObj = $(obj).closest('form').find(".captcha img");
+        var closeObj = $(obj).closest('form').find(".close");
+
+        var mobile = mobileObj.val();
+        var captcha = captchaObj.val();
+        console.log(mobile);
+        if(!checkMobile(mobile))
+        {
+            layer.msg('手机号格式不正确', {icon: 2,scrollbar: false,});
+            return;
+        }
+
+        mobileObj.prop('readonly', true);
+        updateCountdown($('.sendSms'), 5);
+
+        var data = {'id':id, 'mobile':mobile, 'captcha':captcha};
+        var url = "{:_url('login/regsms')}";
+        sendAjax(url, data, function (result) {
+            tokenObj.val(result.data.token);
+            //closeObj.click();
+        }, function (result) {
+            mobileObj.prop('readonly', false);
+            refreshCaptcha(captchaImgObj);
+        });
+
+    }
+
+    function sendMail(obj)
+    {
+        var id = $(obj).closest('form').find("input[name='id']").val();
+        var emailObj = $(obj).closest('form').find("input[name='email']");
+        var tokenObj = $(obj).closest('form').find("input[name='mail_token']");
+        var captchaObj = $(obj).closest('form').find("input[name='captcha']");
+        var captchaImgObj = $(obj).closest('form').find(".captcha img");
+        var closeObj = $(obj).closest('form').find(".close");
+
+        var email = emailObj.val();
+        var captcha = captchaObj.val();
+        console.log(email);
+        if(!checkMail(email))
+        {
+            layer.msg('邮箱格式不正确', {icon: 2,scrollbar: false,});
+            return;
+        }
+
+        emailObj.prop('readonly', true);
+        updateCountdown($('.sendMail'), 5);
+
+        var data = {'id':id, 'email':email, 'captcha':captcha};
+        var url = "{:_url('login/regmail')}";
+        sendAjax(url, data, function (result) {
+            tokenObj.val(result.data.token);
+            //closeObj.click();
+        }, function (result) {
+            emailObj.prop('readonly', false);
+            refreshCaptcha(captchaImgObj);
+        });
+    }
+
+    function sendAjax(url, data, successCallback, failCallback, errorCallback)
+    {
+        let loadT = layer.msg('正在请求,请稍候…', {icon: 16, time: 0, shade: [0.3, '#000'], scrollbar: false,});
+        $.ajax({
+            url:url,
+            method: 'post',
+            dataType: 'json',
+            data: data,
+            complete: function () {
+
+            },
+            success: function (result) {
+                console.log(result);
+                layer.close(loadT);
+                layer.msg(result.msg, {
+                    icon: result.code === 200 ? 1 : 2,
+                    scrollbar: false,
+                });
+
+                if(result.code == 200)
+                {
+                    //toastr.success(result.msg);
+                    //$('#sms_token').val(result.data.token);
+                    if(successCallback)
+                        successCallback(result);
+                }
+                else
+                {
+                    //toastr.error(result.msg);
+                    //$('#mobile').prop('readonly', false);
+                    if(failCallback)
+                        failCallback(result);
+                }
+
+            },
+            error: function () {
+                layer.close(loadT);
+            }
+        });
+    }
+
+    //密码隐藏显示
+    function seePassword(obj)
+    {
+        var password_input = $(obj).parent().parent().parent().children('input:first-child');
+        var pwdValue = password_input.val();//获取密码值
+        console.log(pwdValue)
+        if(pwdValue == '')
+            return;
+
+        var _type = password_input.attr('type');//获取input的type类型
+        if(_type == 'password'){
+            password_input.attr('type','text');
+            $(obj).attr('class','ace-icon fa fa-eye-slash');
+            $(obj).attr('title','隐藏密码');
+        }else if(_type == 'text'){
+            password_input.attr('type','password');
+            $(obj).attr('class','ace-icon fa fa-eye');
+            $(obj).attr('title','显示密码');
+        }
+        password_input.val(pwdValue);
+    }
+</script>
+{/block}
