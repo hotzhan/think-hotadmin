@@ -31,7 +31,8 @@
         "phpmailer/phpmailer": "^6.9",
         "hotzhan/think-verifycode": "^1.0",
         "topthink/think-migration": "^3.1",
-        "firebase/php-jwt": "^6.10"
+        "firebase/php-jwt": "^6.10",
+        "ext-openssl": "*"
     },
     "require-dev": {
         "symfony/var-dumper": ">=4.2",
