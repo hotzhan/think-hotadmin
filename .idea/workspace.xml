@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a726f04f-8b09-456c-8e48-62e579816174" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/api/common.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/api/config/api.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/api/controller/Base.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/api/controller/Login.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/api/controller/User.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/api/exception/ApiException.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/api/logic/Login.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/api/logic/Token.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/api/middleware.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/api/middleware/AllowCrossDomain.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/api/middleware/LoginAuth.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/api/router/api.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/api/controller/Index.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/controller/Index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerConfigs">
+    <option name="configs">
+      <option value="$PROJECT_DIR$/tp/composer.json" />
+      <option value="$PROJECT_DIR$/public/adminlte/composer.json" />
+    </option>
+  </component>
+  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+    <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
+    <execution />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CSS File" />
+        <option value="HTML File" />
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="C:\BtSoft\php\80\php.exe">
+    <include_path>
+      <path value="$PROJECT_DIR$/tp/vendor/league/flysystem" />
+      <path value="$PROJECT_DIR$/tp/vendor/composer" />
+      <path value="$PROJECT_DIR$/tp/vendor/topthink/think-filesystem" />
+      <path value="$PROJECT_DIR$/tp/vendor/topthink/think-trace" />
+      <path value="$PROJECT_DIR$/tp/vendor/topthink/think-helper" />
+      <path value="$PROJECT_DIR$/tp/vendor/psr/simple-cache" />
+      <path value="$PROJECT_DIR$/tp/vendor/topthink/think-orm" />
+      <path value="$PROJECT_DIR$/tp/vendor/psr/http-message" />
+      <path value="$PROJECT_DIR$/tp/vendor/topthink/framework" />
+      <path value="$PROJECT_DIR$/tp/vendor/psr/log" />
+      <path value="$PROJECT_DIR$/tp/vendor/psr/container" />
+      <path value="$PROJECT_DIR$/tp/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/tp/vendor/league/mime-type-detection" />
+      <path value="$PROJECT_DIR$/tp/vendor/symfony/var-dumper" />
+      <path value="$PROJECT_DIR$/vendor/psr/http-factory" />
+      <path value="$PROJECT_DIR$/vendor/psr/http-message" />
+      <path value="$PROJECT_DIR$/vendor/psr/log" />
+      <path value="$PROJECT_DIR$/vendor/phpmailer/phpmailer" />
+      <path value="$PROJECT_DIR$/vendor/psr/simple-cache" />
+      <path value="$PROJECT_DIR$/vendor/hotzhan/think-verifycode" />
+      <path value="$PROJECT_DIR$/vendor/overtrue/easy-sms" />
+      <path value="$PROJECT_DIR$/vendor/topthink/framework" />
+      <path value="$PROJECT_DIR$/vendor/topthink/think-captcha" />
+      <path value="$PROJECT_DIR$/vendor/topthink/think-filesystem" />
+      <path value="$PROJECT_DIR$/vendor/symfony/deprecation-contracts" />
+      <path value="$PROJECT_DIR$/vendor/topthink/think-helper" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/vendor/topthink/think-migration" />
+      <path value="$PROJECT_DIR$/vendor/symfony/var-dumper" />
+      <path value="$PROJECT_DIR$/vendor/topthink/think-multi-app" />
+      <path value="$PROJECT_DIR$/vendor/topthink/think-orm" />
+      <path value="$PROJECT_DIR$/vendor/topthink/think-template" />
+      <path value="$PROJECT_DIR$/vendor/topthink/think-trace" />
+      <path value="$PROJECT_DIR$/vendor/topthink/think-view" />
+      <path value="$PROJECT_DIR$/vendor/guzzlehttp/guzzle" />
+      <path value="$PROJECT_DIR$/vendor/league/flysystem" />
+      <path value="$PROJECT_DIR$/vendor/guzzlehttp/promises" />
+      <path value="$PROJECT_DIR$/vendor/league/mime-type-detection" />
+      <path value="$PROJECT_DIR$/vendor/guzzlehttp/psr7" />
+      <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/vendor/ralouphie/getallheaders" />
+      <path value="$PROJECT_DIR$/vendor/psr/container" />
+      <path value="$PROJECT_DIR$/vendor/psr/http-client" />
+      <path value="$PROJECT_DIR$/vendor/firebase/php-jwt" />
+    </include_path>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2b4rEi5l0dOgqGLZKATaMpeWXjD" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/wwwroot/BearAdmin",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "php.override.implement.member.chooser.php.doc": "NONE",
+    "settings.editor.selected.configurable": "fileTemplates",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\wwwroot\admin.tp8.com\public\static\js" />
+      <recent name="C:\wwwroot\admin.tp8.com\vendor\hotzhan\think-verifycode" />
+      <recent name="C:\wwwroot\admin.tp8.com\extend\hotzhan\verify" />
+      <recent name="C:\wwwroot\admin.tp8.com\extend\hot\verify" />
+      <recent name="C:\wwwroot\admin.tp8.com\extend\hot\verify\config" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\wwwroot\admin.tp8.com\extend\hotzhan\verify" />
+      <recent name="C:\wwwroot\admin.tp8.com\extend\hot\verify\sms" />
+      <recent name="C:\wwwroot\admin.tp8.com\config" />
+      <recent name="C:\wwwroot\admin.tp8.com\app\index\view\index" />
+      <recent name="C:\wwwroot\admin.tp8.com\app\admin\view\login" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a726f04f-8b09-456c-8e48-62e579816174" name="Changes" comment="" />
+      <created>1705485081442</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1705485081442</updated>
+      <workItem from="1705485082552" duration="33735000" />
+      <workItem from="1705645081474" duration="47299000" />
+      <workItem from="1705997377302" duration="10672000" />
+      <workItem from="1706014322385" duration="102371000" />
+      <workItem from="1706362005668" duration="72653000" />
+      <workItem from="1706799431248" duration="81124000" />
+      <workItem from="1707146351276" duration="48331000" />
+      <workItem from="1708397596350" duration="4915000" />
+      <workItem from="1708411508097" duration="54817000" />
+      <workItem from="1708571209792" duration="96802000" />
+      <workItem from="1709545820640" duration="699000" />
+      <workItem from="1709867675666" duration="13789000" />
+      <workItem from="1709890027360" duration="173133000" />
+      <workItem from="1710562173694" duration="32581000" />
+      <workItem from="1710743287883" duration="108814000" />
+      <workItem from="1711249502280" duration="21417000" />
+      <workItem from="1711533738766" duration="11201000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

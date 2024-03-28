@@ -8,7 +8,9 @@
 
 namespace app\api\exception;
 
-class ApiException
+use think\Exception;
+
+class ApiException extends Exception
 {
 
 }
