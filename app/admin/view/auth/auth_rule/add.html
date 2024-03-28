@@ -1,0 +1,212 @@
+{extend name="public/base" /}
+{block name="css"}{/block}
+{block name="js"}{/block}
+
+{block name="content"}
+<div class="row">
+    <div class="col-sm-12">
+
+        <!-- Horizontal Form -->
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">Horizontal Form</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form class="form-horizontal dataForm" action="{:_url('add')}" method="post" enctype="multipart/form-data">
+                {:token_field()}
+                <div class="card-body">
+
+                    <div class="form-group row">
+                        <label for="parent_id" class="col-sm-2 col-form-label form-check-label">父级菜单</label>
+                        <div class="col-sm-4 formInput">
+                            <select class="form-control select2" id="parent_id" name="parent_id" style="width: 100%;">
+                                <option value="0">请选择</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-2 col-form-label form-check-label">名称</label>
+                        <div class="col-sm-4 formInput">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="请输入名称" value="">
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="rule" class="col-sm-2 col-form-label form-check-label">url</label>
+                        <div class="col-sm-4 formInput">
+                            <input type="text" class="form-control" id="rule" name="rule" placeholder="请输入url" value="">
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="sort_number" class="col-sm-2 col-form-label form-check-label">排序</label>
+                        <div class="col-sm-10 col-md-4">
+                            <div class="input-group">
+                                <input id="sort_number" name="sort_number"
+                                       value="{$data.sort_number|default='1000'}" placeholder="请输入排序" type="number"
+                                       class="form-control field-number">
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        $('#sort_number')
+                            .bootstrapNumber({
+                                upClass: 'primary',
+                                downClass: 'danger',
+                                center: true
+                            });
+                    </script>
+
+                    <div class="form-group row">
+                        <label for="icon" class="col-sm-2 col-form-label form-check-label">图标</label>
+                        <div class="col-sm-10 col-md-4">
+                            <div class="input-group">
+                                <input type="text" maxlength="30" id="icon" name="icon"
+                                       value="far fa-circle" class="form-control "
+                                       placeholder="请输入图标class">
+                                <div class="input-group-append">
+                                    <span class="input-group-text iconpicker-component">
+                                        <i class="far fa-circle"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        $('#icon').iconpicker({
+                            //placement: 'bottomLeft',
+                            title: '请选择一个图标',
+                            //component: '.input-group-text', // 图标存放容器
+                            animation:false,
+                        });
+                    </script>
+
+                    <div class="form-group row">
+                        <label for="is_menu_sw" class="col-sm-2 col-form-label form-check-label">是否菜单</label>
+                        <div class="col-sm-10 col-md-4 col-form-label">
+                            <input type="checkbox" id="is_menu_sw"  data-bootstrap-switch>
+                            <input type="hidden" id="is_menu" name="is_menu" value="1">
+                            <script>
+                                $("#is_menu_sw").bootstrapSwitch({
+                                    onText: "是",//开启时展示的文本
+                                    offText: "否",//关闭时展示的文本
+                                    onColor: "primary",
+                                    offColor: "default",
+                                    //labelText: '&nbsp',//空白区域的文本
+                                    //handleWidth: 'auto',
+                                    //labelWidth: 'auto',
+                                    //baseClass: 'bootstrap-switch',
+                                    //wrapperClass: 'wrapper',
+                                    //size: "small",
+                                    state: true, // 默认状态
+                                    //inverse: false, // 是否交换 on off 位置
+                                    onInit: function onInit() { },
+                                    onSwitchChange: function (event, state) {
+                                        //切换时的回调 state
+                                        console.log('state:'+ state)
+                                        $("#is_menu").val(state ? "1" : 0);
+                                    }
+                                })
+                            </script>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="is_show_sw" class="col-sm-2 col-form-label form-check-label">是否显示</label>
+                        <div class="col-sm-10 col-md-4 col-form-label">
+                            <input type="checkbox" id="is_show_sw"  data-bootstrap-switch>
+                            <input type="hidden" id="is_show" name="is_show" value="1">
+                            <script>
+                                $("#is_show_sw").bootstrapSwitch({
+                                    onText: "是",//开启时展示的文本
+                                    offText: "否",//关闭时展示的文本
+                                    onColor: "primary",
+                                    offColor: "default",
+                                    //labelText: '&nbsp',//空白区域的文本
+                                    //handleWidth: 'auto',
+                                    //labelWidth: 'auto',
+                                    //baseClass: 'bootstrap-switch',
+                                    //wrapperClass: 'wrapper',
+                                    //size: "small",
+                                    state: true, // 默认状态
+                                    //inverse: false, // 是否交换 on off 位置
+                                    onInit: function onInit() { },
+                                    onSwitchChange: function (event, state) {
+                                        //切换时的回调 state
+                                        console.log('state:'+ state)
+                                        $("#is_show").val(state ? "1" : 0);
+                                    }
+                                })
+                            </script>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    <div class="offset-sm-2 col-sm-10">
+                        <button type="submit" class="btn btn-primary">确定</button>
+                        <button type="reset" class="btn btn-default">重置</button>
+                    </div>
+                </div>
+                <!-- /.card-footer -->
+            </form>
+
+        </div>
+        <!-- /.card -->
+
+    </div>
+</div>
+
+
+<!-- Page specific script -->
+<script>
+
+    $(function () {
+        //Initialize Select2 Elements
+        $('.select2').select2();
+
+        //表单验证
+        $('.dataForm').validate({
+            rules: {
+                'name': {
+                    required: true
+                },
+                'url': {
+                    required: true
+                }
+            },
+            messages: {
+                'name': {
+                    required: '名称不能为空'
+                },
+                'url': {
+                    required: 'url不能为空'
+                }
+            }
+        });
+
+        var rules = {$rules|raw};
+        console.log(rules);
+        if(rules != null && rules != undefined)
+        {
+            $('#parent_id').children().first().after(generateSelectTree(rules));
+        }
+        else
+        {
+            getRules("{:_url('rules')}");
+        }
+
+    })
+
+</script>
+
+{/block}
+
+
+

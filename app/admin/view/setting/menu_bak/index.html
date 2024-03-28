@@ -1,0 +1,196 @@
+{extend name="public/base" /}
+{block name="css"}{/block}
+{block name="js"}{/block}
+
+{block name="content"}
+<div class="row">
+    <div class="col-sm-12">
+
+
+        <div class="card">
+            <div class="card-header">
+                <a class="btn btn-sm btn-primary" href="{:_url('add')}"><i class="fa fa-plus"></i> 添加</a>
+                <a class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> 删除</a>
+                <a class="btn btn-sm btn-warning showAll" aria-expanded-all="false"><i class="fa fa-plus"></i> <span>显示全部</span></a>
+                <a class="btn btn-sm btn-default"><i class="fa fa-redo"></i> 刷新</a>
+            </div>
+            <!-- ./card-header -->
+            <div class="card-body p-0">
+                <table class="table table-bordered table-hover">
+                    <thead id="ccc" class="cdd">
+                    <tr>
+                        <th style="width:80px;">ID</th>
+                        <th>名称</th>
+                        <th>链接</th>
+                        <th>父ID</th>
+                        <th>图标</th>
+                        <th>排序</th>
+                        <th>状态</th>
+                        <th>日志</th>
+                        <th style="width:140px;max-width: 140px;">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="menuData"  class="cdd">
+
+                    </tbody>
+                </table>
+
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+
+    </div>
+</div>
+<script>
+    $.ajax({
+            url: "{:_url('auth/auth_rule/rules')}",
+            dataType: 'json',
+            type: 'get',
+            data: {'type':0},
+            complete: function () {
+                console.log('%cajax提交完成x', ';color:#00a65a');
+            },
+            success: function (result) {
+                console.log('%cajax提交完成x', ';color:#00a65a');
+                console.log(result.data);
+                $('#menuData').html(generateMenuTree(result.data));
+
+                //初始化显示
+                $.each($(".expandable"), function (index, item){
+                    showAll('false');
+                })
+            },
+            error: function (xhr, type, errorThrown) {
+                console.log('error');
+            }
+        }
+    );
+
+    $(function () { //页面加载完成后执行
+        //显示全部
+        $('.showAll').on('click', function (){
+            console.log(this)
+            if($(this).attr('aria-expanded-all') == 'true')
+            {
+                showAll('false');
+                $(this).attr('aria-expanded-all', 'false')
+                $(this).children().eq(1).text('显示全部')
+                $(this).children().first().removeClass('fa-minus')
+                $(this).children().first().addClass('fa-plus')
+            }
+
+            else
+            {
+                showAll('true');
+                $(this).attr('aria-expanded-all', 'true')
+                $(this).children().eq(1).text('隐藏全部')
+                $(this).children().first().removeClass('fa-plus')
+                $(this).children().first().addClass('fa-minus')
+            }
+
+        })
+    });
+
+    function generateMenuTree(data, paddingLeft=0) {
+        var html = '';
+        paddingLeft += 8;//子菜单缩进
+        // 遍历每个节点
+        for (var i in data) {
+            var className = '';
+            var ariaExpd = '';
+
+            if (!$.isEmptyObject(data[i].children))
+            {
+                ariaExpd = 'aria-expanded="false"';
+                className += 'expandable';
+            }
+            if(paddingLeft>8)//如果paddingLeft不为8说明是子节点
+                className += ' submenu';
+
+            html += '<tr class="'+className+'" data-id="' + data[i].id + '" data-parent-id="' + data[i].parent_id + '" '+ariaExpd+'>';
+            html += '<td>' + data[i].id + '</td>';
+            html += ' <td style="padding-left:' + paddingLeft + 'px;" onclick="itemToggle($(this).closest(\'tr\'))">';
+            if (!$.isEmptyObject(data[i].children))
+                html += '<i class="fas fa-caret-right"></i>';
+            html += data[i].name;
+            html += '</td>';
+            html += '<td>' + data[i].url + '</td>';
+            html += '<td>' + data[i].parent_id + '</td>';
+            html += '<td><i class="' + data[i].icon + '"></i></td>';
+            html += '<td>' + data[i].sort_number + '</td>';
+            html += '<td>' + data[i].is_show + '</td>';
+            html += '<td>' + data[i].log_method + '</td>';
+            html += '<td>';
+            html += '<a class="btn btn-sm btn-primary" href="{:_url(\'add\')}?parent_id=' + data[i].id + '"> 添加</a>';
+            html += '<a class="btn btn-sm btn-primary" href="{:_url(\'edit\')}?id=' + data[i].id + '"> 修改</a>';
+            html += '<a class="btn btn-sm btn-danger AjaxButton" href="#" data-url="{:_url(\'del\')}" data-id="' + data[i].id + '"> 删除</a>';
+            html += '</td>';
+            html += '</tr>';
+
+            // 如果该节点还有子节点，则递归生成子菜单
+            if (!$.isEmptyObject(data[i].children)) {
+                html += generateMenuTree(data[i].children, paddingLeft) ;
+            }
+
+        }
+        return html;
+    }
+
+    /**
+     * 显示全部
+     * @param aria
+     */
+    function showAll(aria)
+    {
+        $.each($(".expandable"), function (index, item){
+            itemToggle(item, true, aria)
+        })
+    }
+
+    /**
+     * 显示隐藏子菜单
+     * @param obj
+     */
+    function itemToggle(obj, all=false, aria='false'){
+        var id = $(obj).data('id')
+        var element = $('[data-parent-id="'+id+'"]')
+        var ariaExpanded = 'aria-expanded'
+        if(all == true)
+        {
+            $(obj).attr(ariaExpanded, aria)
+        }
+        if($(obj).attr(ariaExpanded) == 'true')
+        {
+            //显示子节点
+            $.each(element, function (index, item){
+                $(item).show()
+            })
+            $(obj).attr(ariaExpanded, 'false');
+            //设置箭头图标
+            $(obj).children().eq(1).children().first().removeClass('fa-caret-right');
+            $(obj).children().eq(1).children().first().addClass('fa-caret-down');
+
+        }
+        else if($(obj).attr(ariaExpanded) == 'false')
+        {
+            //隐藏子节点
+            $.each(element, function (index, item){
+                $(item).hide();
+                //如果该节点有子节点，递归遍历隐藏
+                if(element.length > 0 && $(item).hasClass('expandable'))
+                {
+                    itemToggle(element, true, 'false');
+                }
+            })
+            $(obj).attr(ariaExpanded, 'true');
+            //设置箭头图标
+            $(obj).children().eq(1).children().first().removeClass('fa-caret-down');
+            $(obj).children().eq(1).children().first().addClass('fa-caret-right');
+        }
+    }
+</script>
+{/block}
+
+{block name="footer"}{/block}
+
