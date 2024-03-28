@@ -162,15 +162,12 @@ function ajaxRequest(url, method, data, go) {
                     scrollbar: false,
                 });
 
-                if (adminDebug) {
-                    console.log('request success!');
-                    if (result.code === 200) {
-                        console.log('%c result success', ';color:#00a65a');
-                        go = result.url;
-                    } else {
-                        go = 'url://current';
-                        console.log('%c result fail', ';color:#f39c12');
-                    }
+                if (result.code === 200) {
+                    console.log('%c result success', ';color:#00a65a');
+                    go = result.url;
+                } else {
+                    go = 'url://current';
+                    console.log('%c result fail', ';color:#f39c12');
                 }
 
                 goUrl(go);
