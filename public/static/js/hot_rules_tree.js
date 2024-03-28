@@ -106,6 +106,12 @@ function generateSelectTree(data, pidKey='parent_id', paddingLeft='') {
     return html;
 }
 
+/**
+ * 递归折叠列表
+ * @param data
+ * @param paddingLeft
+ * @returns {string}
+ */
 function generateTableTree(data, paddingLeft=0) {
     var html = '';
     var lt = 0.75;
@@ -176,9 +182,11 @@ function itemToggle(obj, all=false, aria='false'){
     if(all == true)
     {
         $(obj).attr(ariaExpanded, aria)
+        console.log($(obj).attr(ariaExpanded))
     }
     if($(obj).attr(ariaExpanded) == 'true')
     {
+        console.log('show')
         //显示子节点
         $.each(element, function (index, item){
             $(item).show()
@@ -191,13 +199,14 @@ function itemToggle(obj, all=false, aria='false'){
     }
     else if($(obj).attr(ariaExpanded) == 'false')
     {
+        console.log('hide')
         //隐藏子节点
         $.each(element, function (index, item){
             $(item).hide();
             //如果该节点有子节点，递归遍历隐藏
             if(element.length > 0 && $(item).hasClass('expandable'))
             {
-                itemToggle(element, true, 'false');
+                itemToggle(item, true, 'false');
             }
         })
         $(obj).attr(ariaExpanded, 'true');
