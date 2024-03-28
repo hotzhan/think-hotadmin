@@ -327,6 +327,7 @@ trait AuthRuleTrait
     protected function getBreadCrumbHtml($menus, $id, string $currentNav = ''): string
     {
         $breadcrumb = $currentNav;
+        $menus = $menus ?? [];
         foreach ($menus as $key=>$value) {
             if ($value['id'] == $id) {
                 /*if($currentNav == '')
