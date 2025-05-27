@@ -1,0 +1,2 @@
+* thinkphp service目录作为服务的目录使用了，Service也作为服务相关的类
+* 避免和thinkphp的服务冲突，业务逻辑层这里就用logic目录和Logic类替代了

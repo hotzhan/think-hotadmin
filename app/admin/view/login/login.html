@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>后台登录</title>
+    <style>
+        .captcha img{height:34px; float:right;}
+    </style>
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="__ADMIN__/plugins/fontawesome-free/css/all.min.css">
+    <!-- app -->
+    <link rel="stylesheet" href="__ADMIN__/dist/css/adminlte.min.css">
+<!--    <link rel="stylesheet" href="__ADMIN__/plugins/bootstrap/css/bootstrap.min.css">-->
+    <!-- hotadmin -->
+    <link rel="stylesheet" href="__STATIC_CSS__/hot_admin.css">
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+    <!-- /.login-logo -->
+    <div class="card card-outline card-primary">
+        <div class="card-header text-center">
+            <span class="h2">{:lang('Admin Login')}</span>
+        </div>
+        <div class="card-body">
+            <p class="login-box-msg">{:lang('Sign in to start your session')}</p>
+
+            <form class="dataForm" action="" method="post">
+                <div class="input-group mb-3 formInput">
+                    <input type="text" name="username" class="form-control" placeholder="{:lang('Username')}">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3 formInput">
+                    <input type="password" name="password" class="form-control" placeholder="{:lang('Password')}">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 15px;">
+                    {switch $captchaType}
+                    {case image}
+                    <div class="col-sm-6 formInput">
+                        <input type="text" name="captcha" class="form-control" placeholder="验证码" maxlength="6">
+                    </div>
+                    <div class="col-sm-6 captcha">
+                        {:captcha_img()}
+                    </div>
+                    {/case}
+                    {case slide}
+                    {/case}
+                    {/switch}
+                </div>
+
+                <div class="row">
+                    <div class="col-8">
+                        <div class="icheck-primary">
+                            <input type="checkbox" name="remember" id="remember">
+                            <label for="remember">
+                                {:lang('Remember Me')}
+                            </label>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-primary btn-block">{:lang('Sign In')}</button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </form>
+
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+</div>
+<!-- /.login-box -->
+
+
+{include file='login/header_defer_css' /}
+{include file='login/header_defer_js' /}
+
+<script>
+
+    $(function () {
+        //loadAllScript();//已经用了defer方式了或者已经放在底部了，就不用这个了
+        //loadAllCss();//已经放在底部了
+        $('.dataForm').validate({
+            rules: {
+                'username': {
+                    required: true
+                },
+                'password': {
+                    required: true
+                },
+                'captcha': {
+                    required: true
+                },
+            },
+            messages: {
+                'username': {
+                    required: '用户名不能为空'
+                },
+                'password': {
+                    required: '密码不能为空'
+                },
+                'captcha': {
+                    required: '验证码不能为空',
+                },
+            },
+            submitHandler: function (form) {
+                //form.submit()//直接提交方式
+                submitForm(form, null, refreshCaptcha)
+            }
+        })
+    })
+
+
+    function refreshCaptcha()
+    {
+        console.log($('.captcha'));
+        $('.captcha img').click();
+    }
+
+    function loadAllScript()
+    {
+        loadScript("__ADMIN__/plugins/pjax/jquery.pjax.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__ADMIN__/plugins/nprogress/nprogress.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__ADMIN__/plugins/bootstrap/js/bootstrap.bundle.min.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__ADMIN__/plugins/moment/moment.min.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__ADMIN__/plugins/daterangepicker/daterangepicker.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__ADMIN__/plugins/select2/js/select2.full.min.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__ADMIN__/plugins/bootstrap-switch/js/bootstrap-switch.min.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__ADMIN__/plugins/toastr/toastr.min.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__ADMIN__/plugins/layer/layer.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__ADMIN__/plugins/inputmask/jquery.inputmask.min.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__ADMIN__/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__ADMIN__/plugins/bootstrap-number/bootstrap-number.min.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__ADMIN__/plugins/fontawesome-iconpicker/js/fontawesome-iconpicker.min.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__ADMIN__/plugins/jquery-validation/jquery.validate.min.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__ADMIN__/plugins/jquery-validation/additional-methods.min.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__ADMIN__/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__ADMIN__/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__ADMIN__/plugins/bs-stepper/js/bs-stepper.min.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__ADMIN__/plugins/dropzone/min/dropzone.min.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__ADMIN__/plugins/viewer/viewer.min.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__ADMIN__/plugins/jquery-viewer/jquery-viewer.min.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__ADMIN__/plugins/echarts/echarts.simple.min.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__ADMIN_PLUGINS__/fileinput/js/fileinput.min.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__ADMIN_PLUGINS__/fileinput/themes/fas/theme.min.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__ADMIN_PLUGINS__/fileinput/js/locales/zh.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__ADMIN_PLUGINS__/fileinput/js/plugins/sortable.min.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__STATIC_JS__/upload.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__ADMIN__/dist/js/adminlte.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__STATIC_JS__/hot_admin_form.js", function() {console.log("jquery.pjax.js Script loaded!");});
+        loadScript("__STATIC_JS__/hot_admin.js", function() {console.log("jquery.pjax.js Script loaded!");});
+    }
+
+    /**
+     * js文件延迟懒加载
+     * @param url
+     * @param callback
+     */
+    function loadScript(url, callback) {
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = url;
+        script.async = true;
+        script.onload = function() {
+            callback();
+        };
+        document.body.appendChild(script);
+        //document.getElementsByTagName("head")[0].appendChild(script);
+    }
+    /**
+     * css文件延迟懒加载
+     * @param url
+     */
+    function loadCSS(url) {
+        var link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.type = "text/css";
+        link.href = url;
+        link.defer = true;
+        document.getElementsByTagName("head")[0].appendChild(link);
+    }
+
+    function loadAllCss()
+    {
+        loadCSS("__ADMIN__/plugins/fontawesome-iconpicker/css/fontawesome-iconpicker.min.css");
+        loadCSS("__STATIC_CSS__/ionicons.min.css");
+        loadCSS("__ADMIN__/plugins/nprogress/nprogress.css");
+        loadCSS("__ADMIN__/plugins/flag-icon-css/css/flag-icon.min.css");
+        loadCSS("__ADMIN__/plugins/toastr/toastr.min.css");
+        loadCSS("__ADMIN__/plugins/icheck-bootstrap/icheck-bootstrap.min.css");
+        loadCSS("__ADMIN__/plugins/daterangepicker/daterangepicker.css");
+        loadCSS("__ADMIN__/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css");
+        loadCSS("__ADMIN__/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css");
+        loadCSS("__ADMIN__/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css");
+        loadCSS("__ADMIN__/plugins/bs-stepper/css/bs-stepper.min.css");
+        loadCSS("__ADMIN__/plugins/dropzone/min/dropzone.min.css");
+        loadCSS("__ADMIN__/plugins/select2/css/select2.min.css");
+        loadCSS("__ADMIN__/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css");
+        loadCSS("__ADMIN__/plugins/fileinput/css/fileinput.min.css");
+        loadCSS("__ADMIN__/dist/css/adminlte.min.css");
+        loadCSS("__STATIC_CSS__/hot_admin.css");
+        //...
+    }
+
+
+</script>
+
+
+</body>
+</html>

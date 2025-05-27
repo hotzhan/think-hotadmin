@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>后台登录</title>
+    <style>
+        .captcha img{height:34px; float:right;}
+    </style>
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="__ADMIN__/plugins/fontawesome-free/css/all.min.css">
+    <!-- app -->
+    <link rel="stylesheet" href="__ADMIN__/dist/css/adminlte.min.css">
+    <!--    <link rel="stylesheet" href="__ADMIN__/plugins/bootstrap/css/bootstrap.min.css">-->
+    <!-- hotadmin -->
+    <link rel="stylesheet" href="__STATIC_CSS__/hot_admin.css">
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+    <!-- /.login-logo -->
+    <div class="card card-outline card-primary">
+        <div class="card-header text-center">
+            <span class="h2">登录</span>
+        </div>
+        <div class="card-body">
+            <p class="login-box-msg">请输入用户名密码</p>
+
+            <form class="dataForm" action="" method="post">
+                <div class="input-group mb-3 formInput">
+                    <input type="text" name="username" class="form-control" placeholder="用户名">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3 formInput">
+                    <input type="password" name="password" class="form-control" placeholder="密码">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 15px;">
+                    <div class="col-sm-6 formInput">
+                        <input type="text" name="captcha" class="form-control" placeholder="验证码" maxlength="6">
+                    </div>
+
+                    <div class="col-sm-6 captcha">
+                        {:captcha_img()}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-8">
+                        <div class="icheck-primary">
+                            <input type="checkbox" name="remember" id="remember">
+                            <label for="remember">
+                                记住我
+                            </label>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-primary btn-block">登录</button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </form>
+
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+</div>
+<!-- /.login-box -->
+
+{include file='login/header_defer_css' /}
+{include file='login/header_defer_js' /}
+
+<script>
+
+    $(function () {
+        $('.dataForm').validate({
+            rules: {
+                'username': {
+                    required: true
+                },
+                'password': {
+                    required: true
+                },
+                'captcha': {
+                    required: true
+                },
+            },
+            messages: {
+                'username': {
+                    required: '用户名不能为空'
+                },
+                'password': {
+                    required: '密码不能为空'
+                },
+                'captcha': {
+                    required: '验证码不能为空',
+                },
+            },
+            submitHandler: function (form) {
+                //form.submit()//直接提交方式
+                submitForm(form, null, refreshCaptcha)
+            }
+        })
+    })
+
+
+    function refreshCaptcha()
+    {
+        console.log($('.captcha'));
+        $('.captcha img').click();
+    }
+</script>
+
+
+</body>
+</html>

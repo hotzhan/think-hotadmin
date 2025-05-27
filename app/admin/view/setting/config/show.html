@@ -1,0 +1,212 @@
+{extend name="public/base" /}
+{block name="css"}{/block}
+{block name="js"}{/block}
+
+{block name="content"}
+<div class="row">
+    <div class="col-sm-12">
+
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-edit"></i>
+                    Tabs Custom Content Examples
+                </h3>
+            </div>
+            <div class="card-body">
+                <!--<h4>Custom Content Above</h4>-->
+                <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
+                    {foreach $configs as $k=>$v}
+                    <li class="nav-item">
+                        <a class="nav-link {if $k==0}active{/if}" id="content-{$k}-tab" data-toggle="pill" href="#content-{$k}" role="tab" aria-controls="content-{$k}" aria-selected="true">{$v.name}</a>
+                    </li>
+                    {/foreach}
+                </ul>
+
+                <div class="tab-custom-content">
+                    <p class="mt-1 mb-1">系统一些基础配置信息</p>
+                </div>
+
+                <div class="tab-content" id="custom-content-above-tabContent">
+
+                    {foreach $configs as $k=>$v}
+                    <div class="tab-pane fade {if $k==0}show active{/if}" id="content-{$k}" role="tabpanel" aria-labelledby="content-{$k}-tab">
+                        <!-- Horizontal Form -->
+                        <!-- form start -->
+                        <form class="form-horizontal dataForm mt-4" method="post" action="{:_url('update')}" enctype="multipart/form-data">
+                            <input type="hidden" name="id" value="{$v.id}" />
+
+                            {foreach $v->content as $ck=>$cv}
+                            <div class="form-group row">
+                                <label for="{$cv['field']}" class="col-sm-2 col-form-label form-check-label">{$cv['name']}</label>
+
+                                <div class="
+                                {if $cv['type']=='multi_file'||$cv['type']=='multi_image'||$cv['type']=='editor'} col-sm-10 {else} col-sm-4 {/if}
+                                {if $cv['type']=='switch'} col-form-label {/if}
+                                formInput">
+
+                                    {switch $cv['type']}
+
+                                    {case text}{//文本}
+                                    <input type="text" class="form-control" id="{$cv['field']}" name="{$cv['field']}" placeholder="请输入{$cv['name']}" value="{$cv['value']}">
+                                    {/case}
+
+                                    {case number}{//整数}
+                                    <input type="number" class="form-control field-number" id="{$cv['field']}" name="{$cv['field']}" placeholder="请输入{$cv['name']}" value="{$cv['value']|default='1000'}">
+                                    <script>
+                                        $("#{$cv['field']}")
+                                            .bootstrapNumber({
+                                                upClass: 'primary',
+                                                downClass: 'danger',
+                                                center: true
+                                            });
+                                    </script>
+                                    {/case}
+
+                                    {case password}{//密码}
+                                    <input type="password" class="form-control" id="{$cv['field']}" name="{$cv['field']}" placeholder="请输入{$cv['name']}" value="{$cv['value']}">
+                                    {/case}
+
+                                    {case mobile}{//手机号}
+                                    <input type="mobile" class="form-control" id="{$cv['field']}" name="{$cv['field']}" placeholder="请输入{$cv['name']}" value="{$cv['value']}">
+                                    {/case}
+
+                                    {case email}{//邮箱}
+                                    <input type="email" class="form-control" id="{$cv['field']}" name="{$cv['field']}" placeholder="请输入{$cv['name']}" value="{$cv['value']}">
+                                    {/case}
+
+                                    {case id_card}
+                                    <input type="text" class="form-control" id="{$cv['field']}" name="{$cv['field']}" placeholder="请输入{$cv['name']}" value="{$cv['value']}">
+                                    {/case}
+
+                                    {case switch}
+                                    <!-- 这里开关不能直接用checkbox的提交表单，可用另一个隐藏input作为数据提交用 -->
+                                    <input type="checkbox" id="{$cv['field']}"  {if $cv['value']=='1'}checked{/if} data-bootstrap-switch>
+                                    <input type="hidden" id="{$cv['field']}_val" name="{$cv['field']}" value="{$cv['value']}">
+                                    <script>
+                                        $("#{$cv['field']}").bootstrapSwitch({
+                                            onText: "开",//开启时展示的文本
+                                            offText: "关",//关闭时展示的文本
+                                            onColor: "primary",
+                                            offColor: "default",
+                                            //labelText: '&nbsp',//空白区域的文本
+                                            //handleWidth: 'auto',
+                                            //labelWidth: 'auto',
+                                            //baseClass: 'bootstrap-switch',
+                                            //wrapperClass: 'wrapper',
+                                            //size: "small",
+                                            //state: {if $cv['value']==1}true{else}false{/if}, // 默认状态
+                                            //inverse: false, // 是否交换 on off 位置
+                                            onInit: function onInit() { },
+                                            onSwitchChange: function (event, state) {
+                                                //切换时的回调 state
+                                                console.log('state:'+ state)
+                                                $("#{$cv['field']}_val").val(state ? "1" : 0);
+                                            }
+                                        })
+                                    </script>
+                                    {/case}
+
+                                    {case select}
+                                    {php}
+                                    $options = explode("\r\n", $cv['options']);
+                                    {/php}
+                                    <select class="form-control select2" id="{$cv['field']}" name="{$cv['field']}">
+                                        <option value="0">请选择</option>
+                                        {volist name="$options" id="vo"}
+                                        {php}$voa = explode("|", $vo);{/php}
+                                        <option value="{$voa[0]}" {if $voa[0] == $cv['value']}selected{/if}>{$voa[1]}</option>
+                                        {/volist}
+                                    </select>
+                                    {/case}
+
+                                    {case image}{//图片}
+                                    <input id="{$cv['field']}_file" name="{$cv['field']}_file" type="file" class="file-loading">
+                                    <input id="{$cv['field']}" name="{$cv['field']}" class="fieldImage" value="{$cv['value']}" hidden placeholder="请上传图片">
+                                    <script>
+                                        initUploadImg("{$cv['field']}");
+                                    </script>
+                                    {/case}
+
+                                    {case multi_image}{//多图片}
+                                    <input id="{$cv['field']}_file" name="{$cv['field']}_file" type="file" class="file-loading " multiple>
+                                    <input id="{$cv['field']}" name="{$cv['field']}" class="fieldImage" value="{$cv['value']}" hidden placeholder="请上传图片">
+                                    <script>
+                                        initUploadMultiImg("{$cv['field']}");
+                                    </script>
+                                    {/case}
+
+                                    {case file}{//文件}
+                                    <input id="{$cv['field']}_file" name="{$cv['field']}_file" type="file" class="file-loading ">
+                                    <input id="{$cv['field']}" name="{$cv['field']}" class="fieldFile" value="{$cv['value']}" hidden placeholder="请上传文件">
+                                    <script>
+                                        initUploadFile("{$cv['field']}", '', 'file');
+                                    </script>
+                                    {/case}
+
+                                    {case multi_file}{//多文件}
+                                    <input id="{$cv['field']}_file" name="{$cv['field']}_file" type="file" class="file-loading " multiple>
+                                    <input id="{$cv['field']}" name="{$cv['field']}" class="fieldMultiFile" value="{$cv['value']}" hidden placeholder="请上传多文件">
+                                    <script>
+                                        initUploadMultiFile("{$cv['field']}", '', 'file');
+                                    </script>
+                                    {/case}
+
+                                    {/switch}
+                                </div>
+                                <div class="{if $cv['type']=='multi_file'||$cv['type']=='multi_image'||$cv['type']=='editor'}{else}col-sm-6{/if}">
+                                    {if $cv['desc']!=''}
+                                    <label for="{$cv['field']}" class="col-form-label form-check-label text-sm text-gray">{$cv['desc']}</label>
+                                    {/if}
+                                </div>
+                            </div>
+                            {/foreach}
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label text-right"></label>
+                                <div class="col-sm-4">
+                                    <button type="submit" class="btn btn-primary" onclick="submitEditForm(this)">确定</button>
+                                    <button type="reset" class="btn btn-default">重置</button>
+                                </div>
+                                <div class="col-sm-6"></div>
+                            </div>
+                        </form>
+                    </div>
+                    {/foreach}
+
+                </div>
+
+            </div>
+            <!-- /.card -->
+        </div>
+        <!-- /.card -->
+
+    </div>
+</div>
+
+
+<!-- Page specific script -->
+<script>
+    $(function () {
+        //Initialize Select2 Elements
+        $('.select2').select2()
+    })
+</script>
+
+<script>
+    setNavTab('.nav-tabs');//设置tab
+</script>
+
+<script>
+
+    function submitEditForm(obj)
+    {
+        var form = $(obj).closest('form');
+        $(form).validate({});
+    };
+</script>
+{/block}
+
+{block name="footer"}{/block}
+
+

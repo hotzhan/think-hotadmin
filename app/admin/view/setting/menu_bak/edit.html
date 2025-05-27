@@ -1,0 +1,190 @@
+{extend name="public/base" /}
+{block name="css"}{/block}
+{block name="js"}{/block}
+
+{block name="content"}
+<div class="row">
+    <div class="col-sm-12">
+
+        <!-- Horizontal Form -->
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">Horizontal Form</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form class="form-horizontal dataForm" action="{:_url('doedit')}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="id" value="{$menut.id}">
+                <div class="card-body">
+
+                    <div class="form-group row">
+                        <label for="parent_id" class="col-sm-2 col-form-label form-check-label">父级菜单</label>
+                        <div class="col-sm-4 formInput">
+                            <select class="form-control select2" id="parent_id" name="parent_id" style="width: 100%;">
+                                <option value="0" {if $menut.parent_id=="0"}selected{/if}>请选择</option>
+                                {volist name="menus" id="menu"}
+                                <option value="{$menu.id}" {if $menu.id==$menut.parent_id}selected{/if}>{$menu.name}</option>
+
+                                {volist name="menu.children" id="submenu"}
+                                <option value="{$submenu.id}" {if $submenu.id==$menut.parent_id}selected{/if}>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    {$submenu.name}
+                                </option>
+
+                                {volist name="submenu.children" id="ssubmenu"}
+                                <option value="{$ssubmenu.id}" {if $ssubmenu.id==$menut.parent_id}selected{/if}>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    {$ssubmenu.name}
+                                </option>
+                                {/volist}
+
+                                {/volist}
+
+                                {/volist}
+                            </select>
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-2 col-form-label form-check-label">名称</label>
+                        <div class="col-sm-4 formInput">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="请输入名称" value="{$menut.name}">
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="url" class="col-sm-2 col-form-label form-check-label">url</label>
+                        <div class="col-sm-4 formInput">
+                            <input type="text" class="form-control" id="url" name="url" placeholder="请输入url" value="{$menut.url}">
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="sort_number" class="col-sm-2 col-form-label form-check-label">排序</label>
+                        <div class="col-sm-10 col-md-4">
+                            <div class="input-group">
+                                <input id="sort_number" name="sort_number"
+                                       value="{$menut.sort_number|default='1000'}" placeholder="请输入排序" type="number"
+                                       class="form-control field-number">
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        $('#sort_number')
+                            .bootstrapNumber({
+                                upClass: 'primary',
+                                downClass: 'danger',
+                                center: true
+                            });
+                    </script>
+
+                    <div class="form-group row">
+                        <label for="icon" class="col-sm-2 col-form-label form-check-label">图标</label>
+                        <div class="col-sm-10 col-md-4">
+                            <div class="input-group">
+                                <input type="text" maxlength="30" id="icon" name="icon"
+                                       value="{$menut.icon}" class="form-control "
+                                       placeholder="请输入图标class">
+                                <div class="input-group-append">
+                                    <span class="input-group-text iconpicker-component">
+                                        <i class="fas fa-search"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        $('#icon').iconpicker({
+                            //placement: 'bottomLeft',
+                            title: '请选择一个图标',
+                            //component: '.input-group-text', // 图标存放容器
+                            animation:false,
+                        });
+                    </script>
+
+                    <div class="form-group row">
+                        <label for="is_show_sw" class="col-sm-2 col-form-label form-check-label">是否显示</label>
+                        <div class="col-sm-10 col-md-4 col-form-label">
+                            <input type="checkbox" id="is_show_sw"  data-bootstrap-switch>
+                            <input type="hidden" id="is_show" name="is_show" value="{$menut.is_show}">
+                            <script>
+                                $("#is_show_sw").bootstrapSwitch({
+                                    onText: "是",//开启时展示的文本
+                                    offText: "否",//关闭时展示的文本
+                                    onColor: "primary",
+                                    offColor: "default",
+                                    //labelText: '&nbsp',//空白区域的文本
+                                    //handleWidth: 'auto',
+                                    //labelWidth: 'auto',
+                                    //baseClass: 'bootstrap-switch',
+                                    //wrapperClass: 'wrapper',
+                                    //size: "small",
+                                    state: {if $menut.is_show==1}true{else/}false{/if}, // 默认状态
+                                    //inverse: false, // 是否交换 on off 位置
+                                    onInit: function onInit() { },
+                                    onSwitchChange: function (event, state) {
+                                        //切换时的回调 state
+                                        console.log('state:'+ state)
+                                        $("#is_show").val(state ? "1" : 0);
+                                    }
+                                })
+                            </script>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    <div class="offset-sm-2 col-sm-10">
+                        <button type="submit" class="btn btn-primary">确定</button>
+                        <button type="reset" class="btn btn-default">重置</button>
+                    </div>
+                </div>
+                <!-- /.card-footer -->
+            </form>
+
+        </div>
+        <!-- /.card -->
+
+    </div>
+</div>
+
+
+<!-- Page specific script -->
+<script>
+    $(function () {
+        //Initialize Select2 Elements
+        $('.select2').select2()
+
+    })
+</script>
+
+<script>
+    //表单验证
+    $('.dataForm').validate({
+        rules: {
+            'name': {
+                required: true
+            },
+            'url': {
+                required: true
+            }
+        },
+        messages: {
+            'name': {
+                required: '名称不能为空'
+            },
+            'url': {
+                required: 'url不能为空'
+            }
+        }
+    })
+</script>
+{/block}
+
+{block name="footer"}{/block}
+

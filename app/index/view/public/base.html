@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HotAdmin</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- fontawesome iconpicker -->
+    <link rel="stylesheet" href="__ADMIN__/plugins/fontawesome-iconpicker/css/fontawesome-iconpicker.min.css">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="__ADMIN__/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="__ADMIN__/plugins/flag-icon-css/css/flag-icon.css">
+
+    <!-- fileinput -->
+    <link rel="stylesheet" href="__ADMIN__/plugins/fileinput/css/fileinput.min.css">
+
+    <!-- Theme style -->
+    <link rel="stylesheet" href="__ADMIN__/dist/css/adminlte.min.css">
+
+    <link rel="stylesheet" href="__STATIC_CSS__/hot_admin.css">
+
+    <style>
+        .nav-item a{white-space: nowrap !important;}
+    </style>
+
+    <script>
+        // 是否为调试模式
+        var adminDebug = parseInt('{:env(\'APP_DEBUG\', false)}') === 1;
+        // 删除文件url
+        var uploadUrl = "{:_url('upload/upload')}";
+        // 删除文件url
+        var fileDelUrl = "{:url('upload/del')}";
+        // 富文本编辑器上传文件
+        var editorUploadUrl = '{:url("upload/editor")}';
+        //列表checkbox选中的数据
+        var dataSelectIds = [];
+    </script>
+
+    <script src="__STATIC_JS__/hot_common.js"></script>
+
+    <!-- jQuery -->
+    <script src="__ADMIN__/plugins/jquery/jquery.min.js"></script>
+
+    {block name="header"}{/block}
+</head>
+<body class="hold-transition layout-top-nav">
+<div class="wrapper">
+
+    {include file="public/navbar" /}
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6">
+<!--                        <h1 class="m-0"> Top Navigation <small>Example 3.0</small></h1>-->
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            {$breadCrumb|raw}
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        {block name="header"}{/block}
+        <!-- Main content -->
+        <div class="content">
+            <div class="container">
+                {block name="content"}{/block}
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+
+    <!-- Main Footer -->
+    <footer class="main-footer">
+        <!-- To the right -->
+        <div class="float-right d-none d-sm-inline">
+            Anything you want
+        </div>
+        <!-- Default to the left -->
+        <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+    </footer>
+</div>
+<!-- ./wrapper -->
+
+<!-- REQUIRED SCRIPTS -->
+
+
+<!-- Bootstrap 4 -->
+<script src="__ADMIN__/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Toastr -->
+<script src="__ADMIN__/plugins/toastr/toastr.min.js"></script>
+<!-- layer -->
+<script src="__ADMIN__/plugins/layer/layer.js"></script>
+<!-- AdminLTE App -->
+
+<!-- jquery-validation -->
+<script src="__ADMIN__/plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="__ADMIN__/plugins/jquery-validation/additional-methods.min.js"></script>
+<script src="__ADMIN__/plugins/jquery-validation/localization/messages_zh.min.js"></script>
+
+<script src="__ADMIN__/dist/js/adminlte.min.js"></script>
+
+<script src="__STATIC_JS__/hot_validate.js"></script>
+<script src="__STATIC_JS__/hot_index.js"></script>
+
+<!-- AdminLTE for demo purposes -->
+<!--<script src="__ADMIN__/dist/js/demo.js"></script>-->
+
+<script>
+    var menus = {$menus|raw};
+    console.log(menus);
+    $(function () {
+        if(menus != undefined)
+        {
+            //生成菜单树
+            $('.menus').html(generateIndexMenuTree(menus));
+            //菜单完成加载后一些初始化
+            //setCurrentOpenMenu();
+            //initMenuClick();
+        }
+        else
+        {
+            //getMenus("{:_url('auth/auth_rule/menus')}");
+        }
+    });
+</script>
+{block name="footer"}{/block}
+
+
+</body>
+</html>

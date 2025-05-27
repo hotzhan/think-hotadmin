@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {block name="meta"}{/block}
+
+    <title>{$title} - {$site.name}</title>
+
+    {include file='public/header_css' /}
+    {block name="css"}{/block}
+
+    {include file='public/header_js' /}
+    {block name="js"}{/block}
+
+    {block name="head"}{/block}
+
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
+<div class="wrapper">
+
+    <!-- Preloader 类preloader一个遮罩层影响加载，去掉-->
+<!--
+    <div class="preloader flex-column justify-content-center align-items-center">
+        <img class="animation__shake" src="__ADMIN__/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+    </div>
+-->
+    {include file='public/navbar' /}
+
+    {include file='public/sidebar' /}
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper" id="pjaxContainer">
+        {include file='public/content_header' /}
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+
+                        {block name="content"}{/block}
+
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+
+        <!-- pjax只在此区域内有效，pajx页面所有要执行的js需要放到这里 -->
+        <script>
+            $( function() {
+                //将复选框列表置为空，避免以前的留存
+                dataSelectIds = [];
+            })
+        </script>
+
+    </div>
+    <!-- /.content-wrapper -->
+
+    {include file='public/footer' /}
+
+    {include file='public/control_sidebar' /}
+
+
+
+</div>
+<!-- ./wrapper -->
+
+<script src="__ADMIN__/dist/js/demo.js"></script>
+{block name="footer"}{/block}
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+
+.table:not(.table-left) td,.table:not(.table-left) th {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.table td.option,.table th.option{
+    width:240px;
+}
+.access .table td{
+    padding:0.2rem;
+}
+
+.access .table input{
+    height: 1.2rem;
+    width: 1.2rem;
+    vertical-align: middle;
+}
+.access .table label{
+    margin:0;
+    vertical-align: middle;
+}
+
+.expandable-body .table{
+    margin: 0.5rem;
+}
+
+.bg-gray1{
+    background-color: #f1f1f1;
+}
+
+.bg-gray2{
+    background-color: #f2f4f5;
+}
+
+.select2-container--default .select2-results__option    {
+    padding:0px 12px;
+    font-size:14px;
+}
+.select2-container--default .select2-results>.select2-results__options  {
+    max-height:300px;
+}
+
+.nav-treeview a{
+    font-size:14px;
+}
+
+.iconpicker-popover.popover{
+    width:400px;
+}
