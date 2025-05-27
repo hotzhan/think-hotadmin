@@ -19,3 +19,19 @@ composer install
 ## 数据库文件
 sql.sql导入到自己的网站mysql数据库
 
+## 后台
+* 后台地址 域名/adminxx
+* 账户admin 后台密码123123
+* adminxx这个可以在文件/config/app.php里设置，还可以设置后台对应域名
+```
+// 应用映射（自动多应用模式有效）
+    'app_map'          => [
+        'adminxx'=>'admin'
+    ],
+    // 域名绑定（自动多应用模式有效）
+    'domain_bind'      => [
+        'api.tp8.com'=>'api', // api应用对应域名
+        //'admin2.tp8.com'=>'admin' // 后台对应域名
+        //'www.tp8.com'=>'index' // 前台对应域名
+    ],
+```
