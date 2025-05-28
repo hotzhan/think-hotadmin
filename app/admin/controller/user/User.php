@@ -14,7 +14,6 @@ use app\common\model\User as UserModel;
 use app\common\model\UserGroup as UserGroupModel;
 use app\common\validate\User as UserValidate;
 use hot\token\src\tool\Random;
-use MongoDB\Driver\Query;
 use think\facade\View;
 use think\response\Json;
 

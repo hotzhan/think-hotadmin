@@ -102,7 +102,7 @@ class Category extends Base
         }
     }
 
-    public function delete(CategoryModel $model)
+    public function del(CategoryModel $model)
     {
         $param = $this->request->param();
         $id = $param['id'];
@@ -160,7 +160,14 @@ class Category extends Base
         {
             return $this->error('删除失败，无法获取到该栏目信息，可能状态值为0');
         }
+    }
 
+    public function updateCache()
+    {
+        //删除规则缓存
+        $this->deleteCategoryMenusCache();
+        $this->deleteCategoriesCache();
 
+        return $this->success('刷新', 200, [], URL_RELOAD);
     }
 }

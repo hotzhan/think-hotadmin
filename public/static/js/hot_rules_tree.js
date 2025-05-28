@@ -5,7 +5,7 @@ function showAlls()
     $(function () { //页面加载完成后执行
         //显示全部
         $('.showAll').on('click', function (){
-            console.log(this)
+            // console.log(this)
             if($(this).attr('aria-expanded-all') == 'true')
             {
                 showAll('false');
@@ -182,11 +182,11 @@ function itemToggle(obj, all=false, aria='false'){
     if(all == true)
     {
         $(obj).attr(ariaExpanded, aria)
-        console.log($(obj).attr(ariaExpanded))
+        // console.log($(obj).attr(ariaExpanded))
     }
     if($(obj).attr(ariaExpanded) == 'true')
     {
-        console.log('show')
+        // console.log('show')
         //显示子节点
         $.each(element, function (index, item){
             $(item).show()
@@ -199,7 +199,7 @@ function itemToggle(obj, all=false, aria='false'){
     }
     else if($(obj).attr(ariaExpanded) == 'false')
     {
-        console.log('hide')
+        // console.log('hide')
         //隐藏子节点
         $.each(element, function (index, item){
             $(item).hide();
@@ -293,23 +293,23 @@ function initMenuClick() {
 
     //点击子菜单
     $('.nav-sidebar .nav-item ul li:not(.nav-link) > a').on('click', function () {
-        console.log('点击子节点')
+        // console.log('点击子节点')
         //let active = $('.nav-sidebar').find('.active');
         //active.removeClass('.active');
         //console.log(active.text());
         $(this).addClass('active');
         let $parents = $(this).parents('li');
-        console.log($(this));
-        console.log($parents);
+        // console.log($(this));
+        // console.log($parents);
         $parents.find('a:first').addClass('active');//父节点高亮
         $parents.siblings().find('a').removeClass('active');
 
     });
     //点击父菜单
     $('.nav-sidebar > li > a').on('click', function () {
-        console.log('点击父节点')
-        console.log($(this))
-        console.log($(this).attr('href'))
+        // console.log('点击父节点')
+        // console.log($(this))
+        // console.log($(this).attr('href'))
         //$(this).addClass('active');
         var ahref = $(this).attr('href')
 
@@ -324,12 +324,12 @@ function initMenuClick() {
 
         if(ahref != '#' || (ahref === '#' && !$parent.hasClass('menu-open')) )
         {
-            console.log('menu-open')
+            // console.log('menu-open')
             //点击的是未展开的其它父菜单
             let $parents = $(this).parents('ul');
             //console.log($parents)
             let $menuopen = $parents.find('.menu-open');
-            console.log($menuopen);
+            // console.log($menuopen);
             $menuopen.find('ul').removeAttr('style');
             $menuopen.find('.active').removeClass('active');
             $menuopen.removeClass('menu-open');
@@ -438,10 +438,10 @@ function afterRulesLoad(result)
         var chkAll = $('#checkboxPrimary0');
         var chks = $("input[type='checkbox'][name='ruleIds[]']");
         if(chkAll.prop('checked')){
-            console.log('checked')
+            // console.log('checked')
             chks.prop("checked",true);
         }else{
-            console.log('unchecked')
+            // console.log('unchecked')
             //chkAll.attr('checked','checked');
             chks.prop("checked",false);
         }
@@ -450,10 +450,10 @@ function afterRulesLoad(result)
     //根据全选checkbox状态设置name
     $("#checkboxPrimary0").on('change',function () {
         if($(this).is(":checked")){ //如果复选框被选中
-            console.log('被选中');
+            // console.log('被选中');
             $('#checkboxPrimary0').attr('name', 'allIds');//全部选中，name
         } else {
-            console.log('未被选中');
+            // console.log('未被选中');
             $('#checkboxPrimary0').attr('name', 'ruleIds[]');
         }
     });

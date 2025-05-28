@@ -23,7 +23,7 @@
             <div class="card-header">
                 <!--<h3 class="card-title">Responsive Hover Table</h3>-->
                 <a class="btn btn-sm btn-primary" href="{:_url('add')}" data-toggle="tooltip" title="添加文章"><i class="fa fa-plus"></i> 添加</a>
-                <button class="btn btn-sm btn-danger AjaxButton" data-url="{:_url('delete')}" data-id="checked" data-toggle="tooltip" title="删除选中数据"><i class="fa fa-trash"></i> 删除</button>
+                <button class="btn btn-sm btn-danger AjaxButton" data-url="{:_url('del')}" data-id="checked" data-toggle="tooltip" title="删除选中数据"><i class="fa fa-trash"></i> 删除</button>
                 <button class="btn btn-sm btn-success AjaxButton" data-url="{:_url('enable')}" data-id="checked" data-toggle="tooltip" title="启用选中数据"><i class="far fa-circle"></i> 启用</button>
                 <button class="btn btn-sm btn-warning AjaxButton" data-url="{:_url('disable')}" data-id="checked" data-toggle="tooltip" title="禁用选中数据"><i class="fa fa-ban"></i> 禁用</button>
                 <button class="btn btn-sm btn-default ReloadButton" data-toggle="tooltip" title="刷新列表数据"><i class="fa fa-redo"></i> 刷新</button>
@@ -74,11 +74,11 @@
                         <td>{$vo.update_time}</td>
                         <td>
                             <a class="btn btn-xs btn-primary" href="{:_url('edit', ['id'=>$vo.id, 'category_id'=>$vo.category_id])}"><i class="fa fa-edit"></i> 修改</a>
-                            <button class="btn btn-xs btn-danger AjaxButton" data-url="{:_url('delete')}" data-id="{$vo.id}"><i class="fa fa-trash"></i> 删除</button>
+                            <button class="btn btn-xs btn-danger AjaxButton" data-url="{:_url('del')}" data-id="{$vo.id}"><i class="fa fa-trash"></i> 删除</button>
                             {if $vo.status==1}
                             <button class="btn btn-xs btn-warning AjaxButton" data-url="{:_url('disable')}" data-id="{$vo.id}"><i class="fas fa-ban"></i> 禁用</button>
                             {else}
-                            <button class="btn btn-xs btn-success AjaxButton" data-url="{:_url('enable')}" data-id="{$vo.id}"><i class="fas fa-file-code"></i> 启用</button>
+                            <button class="btn btn-xs btn-success AjaxButton" data-url="{:_url('enable')}" data-id="{$vo.id}"><i class="far fa-circle"></i> 启用</button>
                             {/if}
                         </td>
                     </tr>

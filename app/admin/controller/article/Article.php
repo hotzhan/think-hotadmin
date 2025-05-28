@@ -118,7 +118,7 @@ class Article extends Base
         }
     }
 
-    public function delete(ArticleModel $model)
+    public function del(ArticleModel $model)
     {
         $params = request()->param();
         if(!isset($params['id']))

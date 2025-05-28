@@ -129,75 +129,86 @@ class AuthRule extends Base
 
     public function multiAdd(AuthRuleModel $model)
     {
-        if($this->request->isPost())
+        $param = $this->request->param();
+        $ruleData = $model->find($param['id']);
+        if($ruleData)
         {
-            $param = $this->request->param();
-            $ruleData = $model->find($param['id']);
-            if($ruleData)
+            $data = [
+                'parent_id' => $ruleData['id'],
+                'icon' => 'far fa-circle',
+                'sort_number' => 1000
+            ];
+            $rule = trim($ruleData['rule'], '/');
+            $indexRes = true;
+            $addRes = true;
+            $editRes = true;
+            $delRes = true;
+            try {
+                //查看
+                $data['name'] = '查看';
+                $data['rule'] = $rule . '/index';
+                if(!$model->where('rule', '=', $data['rule'])->find())
+                    $indexRes = $model->create($data);
+
+                //添加
+                $data['name'] = '添加';
+                $data['rule'] = $rule . '/add';
+                if(!$model->where('rule', '=', $data['rule'])->find())
+                    $addRes = $model->create($data);
+
+                //编辑
+                $data['name'] = '编辑';
+                $data['rule'] = $rule . '/edit';
+                if(!$model->where('rule', '=', $data['rule'])->find())
+                    $editRes = $model->create($data);
+
+                //删除
+                $data['name'] = '删除';
+                $data['rule'] = $rule . '/del';
+                if(!$model->where('rule', '=', $data['rule'])->find())
+                    $delRes = $model->create($data);
+            }
+            catch (\Exception $exception)
             {
-                $data = [
-                    'parent_id' => $ruleData['id'],
-                    'icon' => 'far fa-circle',
-                    'sort_number' => 1000
-                ];
-                $rule = trim($ruleData['rule'], '/');
-                $indexRes = true;
-                $addRes = true;
-                $editRes = true;
-                $delRes = true;
-                try {
-                    //查看
-                    $data['name'] = '查看';
-                    $data['rule'] = $rule . '/index';
-                    if(!$model->where('rule', '=', $data['rule'])->find())
-                        $indexRes = $model->create($data);
-
-                    //添加
-                    $data['name'] = '添加';
-                    $data['rule'] = $rule . '/add';
-                    if(!$model->where('rule', '=', $data['rule'])->find())
-                        $addRes = $model->create($data);
-
-                    //编辑
-                    $data['name'] = '编辑';
-                    $data['rule'] = $rule . '/edit';
-                    if(!$model->where('rule', '=', $data['rule'])->find())
-                        $editRes = $model->create($data);
-
-                    //删除
-                    $data['name'] = '删除';
-                    $data['rule'] = $rule . '/del';
-                    if(!$model->where('rule', '=', $data['rule'])->find())
-                        $delRes = $model->create($data);
-                }
-                catch (\Exception $exception)
-                {
-                    return $this->error($exception->getMessage(), $exception->getCode());
-                }
+                return $this->error($exception->getMessage(), $exception->getCode());
+            }
 
 
-                if($indexRes && $addRes && $editRes && $delRes)
-                {
-                    //删除规则缓存文件
-                    $this->deleteRulesCache(app()->http->getName());
+            if($indexRes && $addRes && $editRes && $delRes)
+            {
+                //删除规则缓存文件
+                $this->deleteRulesCache(app()->http->getName());
 
-                    return $this->success('子规则批量添加成功', 200, [], 'index', 0);
-                }
-                else
-                {
-                    $tips = '';
-                    $tips .= $indexRes ? '' : '[查看]';
-                    $tips .= $addRes ? '' : '[添加]';
-                    $tips .= $editRes ? '' : '[编辑]';
-                    $tips .= $delRes ? '' : '[删除]';
-                    return $this->error('节点'. $tips .'添加失败');
-                }
+                return $this->success('子规则批量添加成功', 200, [], 'index');
             }
             else
             {
-                return $this->error('添加失败，未找到该规则');
+                $tips = '';
+                $tips .= $indexRes ? '' : '[查看]';
+                $tips .= $addRes ? '' : '[添加]';
+                $tips .= $editRes ? '' : '[编辑]';
+                $tips .= $delRes ? '' : '[删除]';
+                return $this->error('节点'. $tips .'添加失败');
             }
         }
+        else
+        {
+            return $this->error('添加失败，未找到该规则');
+        }
+    }
+
+    public function updateCache()
+    {
+        try {
+            //删除规则缓存
+            $this->deleteMenusCache(app()->http->getName());
+            $this->deleteRulesCache(app()->http->getName());
+
+            return $this->success('刷新', 200, [], URL_RELOAD);
+        }catch (\Exception $exception){
+            return $this->error($exception->getMessage(), $exception->getCode());
+        }
+
     }
 
     public function rules(AuthRuleModel $model)

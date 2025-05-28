@@ -9,6 +9,7 @@
             <div class="card-header">
                 <a class="btn btn-sm btn-primary" href="{:_url('add')}"><i class="fa fa-plus"></i> 添加</a>
                 <a class="btn btn-sm btn-warning showAll" aria-expanded-all="false"><i class="fa fa-plus"></i> <span>显示全部</span></a>
+                <a class="btn btn-sm btn-info AjaxButton" data-url="{:_url('updateCache')}"><i class="fa fa-redo"></i> 更新缓存</a>
                 <a class="btn btn-sm btn-default ReloadButton"><i class="fa fa-redo"></i> 刷新</a>
             </div>
             <!-- ./card-header -->
@@ -121,7 +122,7 @@
             html += '<td class="option">';
             html += '<a class="btn btn-xs btn-primary mr-1" href="{:_url(\'add\')}?parent_id=' + data[i].id + '"><i class="fa fa-plus"></i> 添加</a>';
             html += '<a class="btn btn-xs btn-info mr-1" href="{:_url(\'edit\')}?id=' + data[i].id + '&parent_id=' + data[i].parent_id + '"><i class="fa fa-edit"></i> 修改</a>';
-            html += '<a class="btn btn-xs btn-danger AjaxButton"  data-url="{:_url(\'delete\')}" data-id="'+data[i].id+'"><i class="fa fa-trash"></i> 删除</a>';
+            html += '<a class="btn btn-xs btn-danger AjaxButton"  data-url="{:_url(\'del\')}" data-id="'+data[i].id+'"><i class="fa fa-trash"></i> 删除</a>';
             html += '</td>';
             html += '</tr>';
 

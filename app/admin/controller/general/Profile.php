@@ -12,7 +12,7 @@ use app\admin\controller\Base;
 use app\admin\model\Admin;
 use app\admin\logic\Login;
 use app\admin\validate\Admin as AdminValidate;
-use hotzhan\verify\Random;
+use hotzhan\verifycode\Random;
 use think\facade\View;
 
 class Profile extends Base

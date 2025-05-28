@@ -11,7 +11,7 @@ namespace app\index\logic;
 
 use app\common\model\User as UserModel;
 use app\common\model\UserGroupAccess as UserGroupAccessModel;
-use hotzhan\verify\Random;
+use hotzhan\verifycode\Random;
 use think\facade\Cache;
 use think\facade\Cookie;
 use think\facade\Session;
