@@ -1,0 +1,207 @@
+{extend name="public/base" /}
+{block name="css"}{/block}
+{block name="js"}{/block}
+
+{block name="content"}
+<div class="row">
+  <div class="col-sm-12">
+
+    <!-- Horizontal Form -->
+    <div class="card card-primary card-outline">
+      <div class="card-header">
+        <h3 class="card-title">文章管理-修改</h3>
+      </div>
+      <!-- /.card-header -->
+      <!-- form start -->
+      <form class="form-horizontal dataForm" action="" method="post" enctype="multipart/form-data">
+        {:token_field()}
+        <div class="card-body">
+
+          <div class="form-group row">
+            <label for="title" class="col-sm-2 col-form-label form-check-label">标题</label>
+            <div class="col-sm-4 formInput">
+              <input type="text" class="form-control" id="title" name="title" placeholder="请输入标题" value="{$article.title}">
+            </div>
+            <div class="col-sm-6"></div>
+          </div>
+
+          <div class="form-group row">
+            <label for="category_id" class="col-sm-2 col-form-label form-check-label">栏目</label>
+            <div class="col-sm-4 formInput">
+              <select class="form-control select2" id="category_id" name="category_id" style="width: 100%;">
+                <option value="0">请选择</option>
+              </select>
+            </div>
+            <div class="col-sm-6"></div>
+          </div>
+
+          <div class="form-group row">
+            <label for="summernote" class="col-sm-2 col-form-label form-check-label">内容</label>
+            <div class="col-sm-8 formInput">
+              <textarea  id="summernote" name="content" cols="30" rows="6">{$article.content}</textarea>
+            </div>
+            <div class="col-sm-2"></div>
+          </div>
+
+          <div class="form-group row">
+            <label for="sort_number" class="col-sm-2 col-form-label form-check-label">排序</label>
+            <div class="col-sm-10 col-md-4">
+              <div class="input-group">
+                <input id="sort_number" name="sort_number"
+                       value="{$article.sort_number|default='1000'}" placeholder="请输入排序" type="number"
+                       class="form-control field-number">
+              </div>
+            </div>
+          </div>
+          <script>
+            $('#sort_number')
+                    .bootstrapNumber({
+                      upClass: 'primary',
+                      downClass: 'danger',
+                      center: true
+                    });
+          </script>
+
+          <div class="form-group row">
+            <label for="img" class="col-sm-2 col-form-label form-check-label">标题图片</label>
+            <div class="col-sm-8 formInput">
+              <div class="input-group">
+                <input id="img_file" name="img_file" type="file" class="file-loading " data-initial-preview="{$article.img}">
+                <input id="img" name="img" class="fieldImage" value="{$article.img}" hidden placeholder="请上传图片">
+                <script>
+                  initUploadImg('img');
+                </script>
+              </div>
+
+            </div>
+            <div class="col-sm-2"></div>
+          </div>
+
+          <div class="form-group row">
+            <label for="checkbox1" class="col-sm-2 col-form-label form-check-label">状态</label>
+            <div class="col-sm-8 col-md-4 col-form-label">
+              <div class="icheck-primary d-inline mr-3" id="checkbox1">
+                <input type="checkbox" id="is_recommend" name="is_recommend" {if $article.is_recommend==1}checked{/if}>
+                <label for="is_recommend">推荐</label>
+              </div>
+              <div class="icheck-primary d-inline mr-3">
+                <input type="checkbox" id="is_top" name="is_top" {if $article.is_top==1}checked{/if}>
+                <label for="is_top">置顶</label>
+              </div>
+              <div class="icheck-primary d-inline mr-3">
+                <input type="checkbox"  id="is_swiper" name="is_swiper" {if $article.is_swiper==1}checked{/if}>
+                <label for="is_swiper">轮播</label>
+              </div>
+            </div>
+            <div class="col-sm-2"></div>
+          </div>
+
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+          <div class="offset-sm-2 col-sm-10">
+            <button type="submit" class="btn btn-primary">确定</button>
+            <button type="reset" class="btn btn-default">重置</button>
+          </div>
+        </div>
+        <!-- /.card-footer -->
+      </form>
+
+    </div>
+    <!-- /.card -->
+
+  </div>
+</div>
+
+
+<!-- Page specific script -->
+<script>
+
+  $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2();
+
+    //表单验证
+    $('.dataForm').validate({
+      rules: {
+        'title': {
+          required: true
+        },
+        'code': {
+          required: true
+        }
+      },
+      messages: {
+        'title': {
+          required: '名称不能为空'
+        },
+        'code': {
+          required: '缩写不能为空'
+        }
+      }
+    });
+
+    var categories = {$categories|raw};
+    console.log(categories);
+    if(categories != null && categories != undefined)
+    {
+      $('#category_id').children().first().after(generateSelectTree(categories, 'category_id'));
+    }
+
+    // 复选框值变更
+    $('button[type=submit]').on('click', function () {
+      if($('#isrecommend').val() == 'on')
+        $('#isrecommend').val(1);
+      if($('#istop').val() == 'on')
+        $('#istop').val(1);
+      if($('#isswiper').val() == 'on')
+        $('#isswiper').val(1);
+    });
+
+    // Summernote编辑器
+    $('#summernote').summernote({
+      lang: 'zh-CN',
+      height: 300,
+      callbacks: {
+        onImageUpload: function(files) {
+          // 上传文件
+          sendFile($('#summernote'), files[0]);
+        }
+      }
+    });
+  });
+
+  /**
+   * summernote 编辑器上传图片
+   * @param obj jquery节点，示例：$('#myeditor')
+   * @param file
+   */
+  function sendFile(obj, file) {
+    var formData = new FormData();
+    formData.append("upload", file); // 'upload'是文件对应的name属性
+
+    $.ajax({
+      url: editorUploadUrl, // 后端上传接口url
+      data: formData,
+      type: "POST",
+      contentType: false,
+      processData: false,
+      success: function(res) {
+        if (res.uploaded === 1) {
+          obj.summernote('insertImage', res.url);
+        } else {
+          toastr.error(res.msg || '上传失败');
+        }
+      },
+      error: function() {
+        toastr.error('上传失败');
+      }
+    });
+  }
+
+</script>
+
+{/block}
+
+
+

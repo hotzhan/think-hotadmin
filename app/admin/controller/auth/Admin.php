@@ -12,7 +12,7 @@ use app\admin\model\Admin as AdminModel;
 use app\admin\model\AuthGroup as AuthGroupModel;
 use app\admin\model\AuthGroupAccess as AuthGroupAccessModel;
 use app\admin\validate\Admin as AdminValidate;
-use hotzhan\verify\Random;
+use hotzhan\verifycode\Random;
 use think\facade\Config;
 use think\facade\View;
 use think\response\Json;

@@ -92,12 +92,12 @@ trait UploadTrait
 
     /**
      * @param $sha1
-     * @return void
+     * @return
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    protected function saveFile($file, $param): array
+    protected function saveFile($file, $param)
     {
         $fileExist = false;
         $fileInfo = [];

@@ -45,3 +45,9 @@ Route::rule('user/:class$', 'user.:class/index');
 Route::rule('user/:class/$', 'user.:class/index');
 Route::rule('user/:class/:method$', 'user.:class/:method');
 Route::rule('user/:class/:method/:params$', 'user.:class/:method/:params');
+
+Route::rule('article$', 'article.index/index');
+Route::rule('article/:class$', 'article.:class/index');
+Route::rule('article/:class/$', 'article.:class/index');
+Route::rule('article/:class/:method$', 'article.:class/:method');
+Route::rule('article/:class/:method/:params$', 'article.:class/:method/:params');

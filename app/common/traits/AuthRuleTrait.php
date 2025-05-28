@@ -183,12 +183,12 @@ trait AuthRuleTrait
         }
     }
 
-    protected function getRuleName(string $app):string
+    protected function getRuleName(string $app, bool $force = false):string
     {
         $ruleNameCacheKey = $app . "_rule_name";
         $ruleNameCache = Cache::get($ruleNameCacheKey);
         //如果没有缓存，则从数据库中获取数据
-        if(!$ruleNameCache)
+        if(!$ruleNameCache || $force)
         {
             switch($app)
             {

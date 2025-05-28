@@ -1,0 +1,143 @@
+{extend name="public/base" /}
+{block name="css"}{/block}
+{block name="js"}{/block}
+
+{block name="content"}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <a class="btn btn-sm btn-primary" href="{:_url('add')}"><i class="fa fa-plus"></i> 添加</a>
+                <a class="btn btn-sm btn-warning showAll" aria-expanded-all="false"><i class="fa fa-plus"></i> <span>显示全部</span></a>
+                <a class="btn btn-sm btn-default ReloadButton"><i class="fa fa-redo"></i> 刷新</a>
+            </div>
+            <!-- ./card-header -->
+            <div class="card-body p-0">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th style="width:80px;">ID</th>
+                        <th class="text-left">名称</th>
+                        <th class="text-left">缩写</th>
+                        <th>父ID</th>
+                        <th>图片</th>
+                        <th>排序</th>
+                        <th class="option">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="menuData">
+
+                    </tbody>
+                </table>
+
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+
+    </div>
+</div>
+
+<script>
+    $(function () {
+        var categories = {$categories|raw};
+        console.log(categories);
+        if(categories != null && categories != undefined)
+        {
+            $('#menuData').html(generateTableTree2(categories));
+
+            //初始化显示
+            $.each($(".expandable"), function (index, item){
+                showAll('false');
+            });
+        }
+        // else
+        // {
+        //     getRulesTable("{:_url('rules')}");
+        // }
+    });
+
+    function getRulesTable(url) {
+        //直接服务端渲染好了，不用这里再加载
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            type: 'get',
+            data: {'type':0},
+            complete: function () {
+                console.log('%cajax提交完成x', ';color:#00a65a');
+            },
+            success: function (result) {
+                var data = changeData(result.data);
+                $('#menuData').html(generateTableTree2(data));
+
+                //初始化显示
+                $.each($(".expandable"), function (index, item){
+                    showAll('false');
+                });
+
+                //initAddAction("{:_url('add')}");
+                //initEditAction("{:_url('edit')}");
+                //initMultiAddAction("{:_url('multiadd')}");
+                //initDelAction("{:_url('del')}");
+            },
+            error: function (xhr, type, errorThrown) {
+                console.log('error');
+                console.log(result);
+            }
+        });
+    }
+    function generateTableTree2(data, paddingLeft=0) {
+        var html = '';
+        var lt = 0.75;
+        paddingLeft += lt;//子菜单缩进
+        // 遍历每个节点
+        for (var i in data) {
+            var className = '';
+            var ariaExpd = '';
+
+            if (!$.isEmptyObject(data[i].children))
+            {
+                ariaExpd = 'aria-expanded="false"';
+                className += 'expandable';
+            }
+            if(paddingLeft > lt)//如果paddingLeft不为8说明是子节点
+                className += ' submenu';
+
+            html += '<tr class="'+className+'" data-id="' + data[i].id + '" data-parent-id="' + data[i].parent_id + '" '+ariaExpd+'>';
+            html += '<td>' + data[i].id + '</td>';
+            html += ' <td class="text-left" style="padding-left:' + paddingLeft + 'rem;" onclick="itemToggle($(this).closest(\'tr\'))">';
+            if (!$.isEmptyObject(data[i].children))
+                html += '<i class="fas fa-caret-right"></i> ';
+            html += data[i].name;
+            html += '</td>';
+            html += '<td>' + data[i].code + '</td>';
+            html += '<td>' + data[i].parent_id + '</td>';
+            if(data[i].img !== '')
+                html += '<td><img src="' + data[i].img + '" style="width:50px;height:50px" /></td>';
+            else
+                html += '<td>无</td>';
+            html += '<td>' + data[i].sort_number + '</td>';
+            html += '<td class="option">';
+            html += '<a class="btn btn-xs btn-primary mr-1" href="{:_url(\'add\')}?parent_id=' + data[i].id + '"><i class="fa fa-plus"></i> 添加</a>';
+            html += '<a class="btn btn-xs btn-info mr-1" href="{:_url(\'edit\')}?id=' + data[i].id + '&parent_id=' + data[i].parent_id + '"><i class="fa fa-edit"></i> 修改</a>';
+            html += '<a class="btn btn-xs btn-danger AjaxButton"  data-url="{:_url(\'delete\')}" data-id="'+data[i].id+'"><i class="fa fa-trash"></i> 删除</a>';
+            html += '</td>';
+            html += '</tr>';
+
+            // 如果该节点还有子节点，则递归生成子菜单
+            if (!$.isEmptyObject(data[i].children)) {
+                html += generateTableTree2(data[i].children, paddingLeft) ;
+            }
+
+        }
+        return html;
+    }
+</script>
+{/block}
+
+{block name="footer"}
+
+{/block}
+
+
